@@ -1,0 +1,24 @@
+@import "../../index.scss";
+
+.form__label {
+  width: 220px;
+  font-weight: $medium;
+  font-size: $normal;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form__input {
+  width: 210;
+  height: 35px;
+  padding: 0 7px;
+  font-family: 'Ubuntu', sans-serif;
+  color: $secondary-color;
+  border: 1px solid $secondary-color;
+  border-radius: $border-radius-small;
+}
+
+.form__input:focus {
+  outline: none;
+}
