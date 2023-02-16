@@ -1,0 +1,46 @@
+@import '../../index.scss';
+
+.todolist__block {
+  width: 100%;
+  margin: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.todolist__header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.todolist__input--form {
+  padding: 20px 15px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+
+  border-radius: $border-radius-medium;
+  box-shadow: 3px 3px 7px $secondary-color;
+}
+
+.todolist__inputs__block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.todolist__list__block {
+  width: 550px;
+  max-width: 60%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
