@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Checkbox from '../Checkbox';
 import './style.scss';
 
-function Input({ label, type, value, onChange }) {
+function Input({ label, type, value, onChange, max }) {
   const [inputType, setInputType] = useState('password');
 
   function toggleType() {
@@ -20,6 +20,7 @@ function Input({ label, type, value, onChange }) {
         <input
           className='form__input'
           value={value}
+          maxLength={max}
           onChange={(e) => onChange(e.target.value)}
           type={type === 'password' ? inputType : type}
           autoComplete="new-password"
