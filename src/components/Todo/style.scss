@@ -1,0 +1,25 @@
+@import '../../index.scss';
+
+.todo__block {
+  max-width: 550px;
+
+  padding: 10px 15px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-radius: $border-radius-medium;
+  box-shadow: 3px 3px 7px $secondary-color;
+}
+
+.todo__text__block {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.todo__text--heading,
+.todo__text--description {
+  margin: 0;
+}
