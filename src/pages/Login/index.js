@@ -3,7 +3,7 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 import './style.scss';
 
-function Step1() {
+function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -17,31 +17,28 @@ function Step1() {
 
   return (
     <div className='login'>
-      <div className='block__inputs' >
-        <h1>Login Page</h1>
+      <div className='login__inputs__block' >
+        <h1 className='login__heading' >Login Page</h1>
         <Input
           label='Username'
           type='text'
           value={username}
           onChange={updUsername}
-          field='username'
         />
         <Input
           label='Password'
           type='password'
           value={password}
           onChange={updPassword}
-          field='password'
         />
       </div>
       <div className='block__buttons' >
         <Button
-          txt='Next'
+          txt='Login'
         />
       </div>
-      <p className='admin__login' >Login as <a href='#'>admin</a></p>
     </div>
   );
 }
 
-export default Step1;
+export default Login;
