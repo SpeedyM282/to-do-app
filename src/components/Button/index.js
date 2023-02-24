@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.scss';
 
-function Button({ txt }) {
+function Button({ txt, onClick }) {
   const style = {
     backgroundColor: txt === 'Delete' ? '#EB2E2E' : '#007bff'
   };
@@ -11,6 +11,7 @@ function Button({ txt }) {
       <button
         className='button'
         style={style}
+        onClick={onClick}
       >
         {txt}
       </button>
