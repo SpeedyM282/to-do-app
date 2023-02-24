@@ -1,19 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { todosGET, todosPOST } from '../../api/UserAPI';
+import * as actions from '../../redux/actionTypes';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import Todo from '../../components/Todo';
 import './style.scss';
 
 function TodoList() {
-  const [heading, setHeading] = useState('');
+  const dispatch = useDispatch();
+  const todos = useSelector(state => state.todosReducer);
+
+  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-  function updHeading(value) {
-    setHeading(value);
+  const INPUT_MIN_LENGTH = 3;
+
+  useEffect(() => {
+    todosGET()
+      .then(res => dispatch({ type: actions.ASSIGN_TODOS, payload: res.data }))
+      .catch(error => console.log(error));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function updTitle(value) {
+    setTitle(value);
   }
 
   function updDescription(value) {
     setDescription(value);
+  }
+
+  function handleClick() {
+    if (title.length < INPUT_MIN_LENGTH || description.length < INPUT_MIN_LENGTH) {
+      alert('Title and Description lengths must be more than 3 characters!');
+      return;
+    }
+
+    todosPOST(title, description)
+      .then(res => dispatch({ type: actions.ADD_TODO, payload: res.data }))
+      .catch(error => console.log('Error: ', error));
+
+    setTitle('');
+    setDescription('');
   }
 
   return (
@@ -26,11 +54,11 @@ function TodoList() {
       <div className='todolist__input--form' >
         <div className='todolist__inputs__block'>
           <Input
-            label='Heading'
+            label='Title'
             type='text'
             max='15'
-            value={heading}
-            onChange={updHeading}
+            value={title}
+            onChange={updTitle}
           />
           <Input
             label='Description'
@@ -40,14 +68,11 @@ function TodoList() {
             onChange={updDescription}
           />
         </div>
-        <Button txt='Add' />
+        <Button txt='Add' onClick={handleClick} />
       </div>
 
       <div className='todolist__list__block' >
-        <Todo heading='Todo-1' description='Hello World' />
-        <Todo heading='Todo-2' description='Hello World' />
-        <Todo heading='Todo-3' description='Hello World' />
-        <Todo heading='Todo-4' description='Hello World' />
+        {todos}
       </div>
     </div>
   );
