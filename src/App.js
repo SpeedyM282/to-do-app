@@ -1,15 +1,17 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Login from './pages/Login';
-import TodoList from './pages/TodoList';
+import UserPage from './pages/UserPage';
+import Admin from './pages/Admin';
 import './App.scss';
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path='/to-do-app/' element={<Login />} />
-        <Route path='/to-do-app/user' element={<TodoList />} />
+        <Route exact path='/to-do-app/' element={<Login />} />
+        <Route path='/to-do-app/user' element={<UserPage />} />
+        <Route path='/to-do-app/admin/*' element={<Admin />} />
       </Routes>
     </div>
   );
