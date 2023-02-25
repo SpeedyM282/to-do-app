@@ -1,5 +1,7 @@
 import Todo from "./components/Todo";
 
+localStorage.setItem('listsToggle', JSON.stringify({ showTodos: false, showUsers: false }));
+
 export function todoGenerator(id, title, description) {
   return <Todo key={id} id={id} title={title} description={description} />;
 }
