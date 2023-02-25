@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { UPDATE_ROLE } from '../../redux/actionTypes';
-import { loginPOST } from '../../api/UserAPI';
+import { loginPOST } from '../../api';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import './style.scss';
@@ -27,7 +27,7 @@ function Login() {
       .then(res => {
         dispatch({ type: UPDATE_ROLE, payload: res.data.role })
       })
-      .catch(() => alert('Wrong Username or Password!'));
+      .catch((err) => alert('Something went wrong:\n' + err));
   }
 
   return (
