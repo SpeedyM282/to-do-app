@@ -10,6 +10,7 @@ function Button({ txt, onClick }) {
     <>
       <button
         className='button'
+        type='button'
         style={style}
         onClick={onClick}
       >

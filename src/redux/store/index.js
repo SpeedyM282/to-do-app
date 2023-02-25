@@ -1,6 +1,7 @@
 import { createStore, combineReducers } from "redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { userReducer } from '../userReducer';
+// import { adminReducer } from '../adminReducer';
 import { todosReducer } from '../todosReducer';
 
 const rootReducer = combineReducers({ userReducer, todosReducer });
