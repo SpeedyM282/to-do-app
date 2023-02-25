@@ -1,18 +1,7 @@
-import axios from 'axios';
+import { client } from './';
 
-
-const client = axios.create({
-  withCredentials: true,
-  baseURL: 'http://localhost:3000/api/v1'
-});
-
-export function loginPOST(username, password) {
-  const data = {
-    "login": username,
-    "password": password
-  };
-
-  return client.post('/login', data);
+export function usersGET() {
+  return client.get('/users');
 }
 
 export function todosGET() {
