@@ -1,8 +1,4 @@
-import { client } from './';
-
-export function usersGET() {
-  return client.get('/users');
-}
+import { client } from '.';
 
 export function todosGET() {
   return client.get('/todos');
@@ -18,5 +14,9 @@ export function todosPOST(title, description) {
 }
 
 export function todoDELETE(id) {
-  client.delete(`/todos/${id}`);
+  return client.delete(`/todos/${id}`);
+}
+
+export function todoPUT(id) {
+  return client.put(`/todos/${id}`);
 }

@@ -21,3 +21,7 @@ export function logoutPOST() {
 export function meGET() {
   return client.get('/me');
 }
+
+export function usersGET() {
+  return client.get('/users');
+}
