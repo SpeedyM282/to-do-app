@@ -5,7 +5,7 @@ import { UPDATE_ROLE } from '../../redux/actionTypes';
 import Button from '../../components/Button';
 import TodoList from '../../components/TodoList';
 import UsersList from '../../components/UsersList';
-import { Icon } from './link-icon.js';
+import { LinkIcon } from '../../Icons';
 import './style.scss';
 
 function Admin() {
@@ -15,15 +15,17 @@ function Admin() {
 
   const todoStyle = {
     fontWeight: showTodos ? 'bold' : 'normal'
-  }
+  };
 
   const userStyle = {
     fontWeight: showUsers ? 'bold' : 'normal'
-  }
+  };
 
   useEffect(() => {
     meGET()
-      .then(res => dispatch({ type: UPDATE_ROLE, payload: res.data.role }))
+      .then(res => {
+        dispatch({ type: UPDATE_ROLE, payload: res.data.role });
+      })
       .catch(() => window.location.href = '/to-do-app/');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -51,21 +53,20 @@ function Admin() {
   }
 
   function showTodoList() {
-    localStorage.setItem('listsToggle', JSON.stringify({ showTodos: true, showUsers: false }));
+    localStorage.setItem('listsToggle', JSON.stringify({ showTodos, showUsers }));
 
     window.location.href = '/to-do-app/admin/todo-list';
   }
 
   function showUsersList() {
-    localStorage.setItem('listsToggle', JSON.stringify({ showTodos: false, showUsers: true }));
+    localStorage.setItem('listsToggle', JSON.stringify({ showTodos, showUsers }));
 
     window.location.href = '/to-do-app/admin/users-list';
   }
 
   function logout() {
     logoutPOST()
-      .then(res => {
-        console.log(res);
+      .then(() => {
         window.location.href = '/to-do-app/';
       })
       .catch(err => alert('Something went wrong:\n' + err));
@@ -76,13 +77,15 @@ function Admin() {
 
       <nav className='admin__navbar' >
         <h1>ADMIN PAGE</h1>
+
         <div className='admin__navbar--links__block' >
           <button
             className='admin__navbar--link icon'
             onClick={navigateToUserPage}
           >
-            User<Icon />
+            User <LinkIcon />
           </button>
+
           <button
             style={todoStyle}
             className='admin__navbar--link'
@@ -90,6 +93,7 @@ function Admin() {
           >
             Todos List
           </button>
+
           <button
             style={userStyle}
             className='admin__navbar--link'
@@ -98,20 +102,16 @@ function Admin() {
             Users List
           </button>
         </div>
+
         <div className='admin__navbar--buttons__block' >
           <Button txt='Logout' onClick={logout} />
         </div>
       </nav>
 
       <main className='admin__main' >
-        {
-          showTodos &&
-          <TodoList />
-        }
-        {
-          showUsers &&
-          <UsersList />
-        }
+        {showTodos && <TodoList />}
+
+        {showUsers && <UsersList />}
       </main>
 
     </div>

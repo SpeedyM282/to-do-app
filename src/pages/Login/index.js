@@ -14,18 +14,10 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  function updUsername(value) {
-    setUsername(value);
-  }
-
-  function updPassword(value) {
-    setPassword(value);
-  }
-
   function handleClick() {
     loginPOST(username, password)
       .then(res => {
-        dispatch({ type: UPDATE_ROLE, payload: res.data.role })
+        dispatch({ type: UPDATE_ROLE, payload: res.data.role });
       })
       .catch((err) => alert('Something went wrong:\n' + err));
   }
@@ -39,13 +31,13 @@ function Login() {
           label='Username'
           type='text'
           value={username}
-          onChange={updUsername}
+          onChange={(value) => setUsername(value)}
         />
         <Input
           label='Password'
           type='password'
           value={password}
-          onChange={updPassword}
+          onChange={(value) => setPassword(value)}
         />
       </div>
       <div className='block__buttons' >

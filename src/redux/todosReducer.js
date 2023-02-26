@@ -11,7 +11,7 @@ export function todosReducer(state = defaultState, action) {
       return [...state, ...todosAssigner(data)];
 
     case ADD_TODO:
-      return [...state, todoGenerator(data.id, data.title, data.description)];
+      return [...state, todoGenerator(data.id, data.title, data.description, data.createdBy)];
 
     case DELETE_TODO:
       return todoDeleter(state, action.payload);

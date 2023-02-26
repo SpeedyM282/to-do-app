@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { usersGET } from '../../api/UserAPI';
+import { usersGET } from '../../api';
 import User from '../User';
 import './style.scss';
 
