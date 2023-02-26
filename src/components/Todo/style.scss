@@ -23,3 +23,10 @@
 .todo__text--description {
   margin: 0;
 }
+
+.todo__buttons__block {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 25px;
+}
