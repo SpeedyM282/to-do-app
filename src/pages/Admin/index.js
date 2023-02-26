@@ -5,6 +5,7 @@ import { UPDATE_ROLE } from '../../redux/actionTypes';
 import Button from '../../components/Button';
 import TodoList from '../../components/TodoList';
 import UsersList from '../../components/UsersList';
+import { Icon } from './link-icon.js';
 import './style.scss';
 
 function Admin() {
@@ -77,10 +78,10 @@ function Admin() {
         <h1>ADMIN PAGE</h1>
         <div className='admin__navbar--links__block' >
           <button
-            className='admin__navbar--link'
+            className='admin__navbar--link icon'
             onClick={navigateToUserPage}
           >
-            User
+            User<Icon />
           </button>
           <button
             style={todoStyle}
