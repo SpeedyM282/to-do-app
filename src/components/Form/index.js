@@ -72,7 +72,7 @@ function Form({ btnTxt, onSave }) {
   }
 
   return (
-    <div className='form' >
+    <div style={{ boxShadow: loaderDisplay === 'flex' && 'none' }} className='form' >
       {loaderDisplay === 'none' ?
         <>
           <div className='inputs__block'>
