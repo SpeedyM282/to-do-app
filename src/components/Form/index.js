@@ -1,18 +1,48 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { todosPOST } from '../../api/todosAPI';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { todoPOST, todoPUT, todoByIdGET } from '../../api/todosAPI';
 import { ADD_TODO } from '../../redux/actionTypes';
 import Input from '../Input';
 import Button from '../Button';
+import Loader from '../Loader';
 import './style.scss';
 
 function Form({ btnTxt }) {
   const dispatch = useDispatch();
+  const todoID = useSelector(state => state.userReducer.id);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [loaderDisplay, setLoaderDisplay] = useState('none');
 
   const INPUT_MIN_LENGTH = 3;
+
+  useEffect(() => {
+    if (btnTxt === 'Save') {
+      setLoaderDisplay('flex');
+
+      todoByIdGET(todoID)
+        .then(res => {
+          setLoaderDisplay('none');
+
+          setTitle(res.data.title);
+          setDescription(res.data.description);
+        })
+        .catch(err => alert('Something went wrong:\n' + err));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function updateTodo() {
+    if (title.length < INPUT_MIN_LENGTH || description.length < INPUT_MIN_LENGTH) {
+      alert('Title and Description lengths must be more than 3 characters!');
+      return;
+    }
+
+    todoPUT(todoID, title, description)
+      .then(res => console.log(res))
+      .catch(err => alert('Something went wrong:\n' + err));
+  }
 
   function addTodo() {
     if (title.length < INPUT_MIN_LENGTH || description.length < INPUT_MIN_LENGTH) {
@@ -20,7 +50,7 @@ function Form({ btnTxt }) {
       return;
     }
 
-    todosPOST(title, description)
+    todoPOST(title, description)
       .then(res => {
         dispatch({ type: ADD_TODO, payload: res.data });
       })
@@ -30,7 +60,7 @@ function Form({ btnTxt }) {
     setDescription('');
   }
 
-  return (
+  return loaderDisplay === 'none' ? (
     <div className='form' >
       <div className='inputs__block'>
         <Input
@@ -48,9 +78,9 @@ function Form({ btnTxt }) {
           onChange={(value) => setDescription(value)}
         />
       </div>
-      <Button txt={btnTxt} onClick={addTodo} />
+      <Button txt={btnTxt} onClick={btnTxt === 'Add' ? addTodo : updateTodo} />
     </div>
-  );
+  ) : <Loader display={loaderDisplay} />;
 }
 
 export default Form;

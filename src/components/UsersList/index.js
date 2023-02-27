@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { usersGET } from '../../api';
+import Loader from '../Loader';
 import User from '../User';
 import './style.scss';
 
 function UsersList() {
   const [users, setUsers] = useState([]);
+  const [loaderDisplay, setLoaderDisplay] = useState('flex');
 
   useEffect(() => {
     usersGET()
-      .then(res => setUsers(res.data.map((e, i) => <User key={i} login={e.login} role={e.role} name={e.name} />)))
+      .then(res => {
+        setLoaderDisplay('none');
+        setUsers(res.data.map((e, i) => <User key={i} login={e.login} role={e.role} name={e.name} />))
+      })
       .catch(error => alert('Something Bad Happened:\n' + error));
   }, []);
 
@@ -20,6 +25,7 @@ function UsersList() {
         <p className='userlist__headings' >Name:</p>
       </div>
       <div className='userslist' >
+        <Loader display={loaderDisplay} />
         {users}
       </div>
     </div>

@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { todoDELETE } from '../../api/todosAPI';
-import { DELETE_TODO } from '../../redux/actionTypes';
+import { DELETE_TODO, UPDATE_ID } from '../../redux/actionTypes';
 import { DeleteIcon, EditIcon } from '../../Icons';
-// import Form from '../Form';
+import Form from '../Form';
 import './style.scss';
 
 function Todo({ id, title, description, createdBy }) {
   const dispatch = useDispatch();
   const role = useSelector(state => state.userReducer.role);
+
   const [show, setShow] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editForm, setEditForm] = useState(<></>);
 
   function updateTodo() {
-    // return (
-    //   <Form btnTxt='Save' />
-    // )
+    dispatch({ type: UPDATE_ID, payload: id })
+    setEditForm(<Form btnTxt='Save' />);
+    setIsEditMode(true);
   }
 
   function deleteTodo() {
@@ -39,15 +42,16 @@ function Todo({ id, title, description, createdBy }) {
     }
   }
 
-  return show ? (
-    <div className='todo__block' >
-      <div className='todo__text__block' >
-        <h2 className='todo__text--title' >{title}</h2>
-        <p className='todo__text--description' >{description}</p>
+  return show && isEditMode ?
+    editForm : (
+      <div className='todo__block' >
+        <div className='todo__text__block' >
+          <h2 className='todo__text--title' >{title}</h2>
+          <p className='todo__text--description' >{description}</p>
+        </div>
+        {buttons()}
       </div>
-      {buttons()}
-    </div>
-  ) : <></>;
+    );
 }
 
 export default Todo;
