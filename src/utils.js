@@ -39,3 +39,10 @@ export function todoUpdater(todos, id, title, description) {
 export function todosAssigner(data) {
   return data.map(e => todoGenerator(e.id, e.title, e.description, e.createdBy));
 }
+
+export function loaderStyle() {
+  return {
+    marginTop: '20%',
+    boxShadow: 'none'
+  };
+}

@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { logoutPOST, meGET } from '../../api';
 import { UPDATE_ROLE } from '../../redux/actionTypes';
+import { loaderStyle } from '../../utils';
 import TodoList from '../../components/TodoList';
 import Button from '../../components/Button';
 import './style.scss';
+import Loader from '../../components/Loader';
 
 function UserPage() {
   const dispatch = useDispatch();
+  const [loaderDisplay, setLoaderDisplay] = useState('none');
 
   useEffect(() => {
     meGET()
@@ -19,22 +22,28 @@ function UserPage() {
   }, []);
 
   function logout() {
+    setLoaderDisplay('flex');
+
     logoutPOST()
-      .then(res => {
+      .then(() => {
+        setLoaderDisplay('none');
         window.location.href = '/to-do-app/';
       })
       .catch(err => alert('Something went wrong:\n' + err));
   }
 
   return (
-    <div className='user__page__block' >
+    <div style={loaderDisplay === 'flex' ? loaderStyle() : {}} className='user__page__block' >
+      {loaderDisplay === 'none' ?
+        <>
+          <div className='user__page__header' >
+            <h1 className='user__page__heading' >USER PAGE</h1>
+            <Button txt='Logout' onClick={logout} />
+          </div>
 
-      <div className='user__page__header' >
-        <h1 className='user__page__heading' >USER PAGE</h1>
-        <Button txt='Logout' onClick={logout} />
-      </div>
-
-      <TodoList />
+          <TodoList />
+        </> : <Loader />
+      }
     </div>
   );
 }

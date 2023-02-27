@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginPOST, logoutPOST, meGET } from '../../api';
+import { logoutPOST, meGET } from '../../api';
 import { UPDATE_ROLE } from '../../redux/actionTypes';
-import { LinkIcon } from '../../Icons';
+import { loaderStyle } from '../../utils';
 import Button from '../../components/Button';
 import TodoList from '../../components/TodoList';
 import UsersList from '../../components/UsersList';
@@ -53,20 +53,6 @@ function Admin() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.pathname]);
 
-  function navigateToUserPage() {
-    setLoaderDisplay('flex');
-
-    logoutPOST()
-      .catch(err => alert('Something went wrong:\n' + err));
-
-    loginPOST('User', 'user123')
-      .then(() => {
-        setLoaderDisplay('none');
-        window.location.href = '/to-do-app/user';
-      })
-      .catch(err => alert('Something went wrong:\n' + err));
-  }
-
   function showTodoList() {
     localStorage.setItem('listsToggle', JSON.stringify({ showTodos, showUsers }));
 
@@ -91,19 +77,12 @@ function Admin() {
   }
 
   return (
-    <div className='admin__block' >
+    <div style={loaderDisplay === 'flex' ? loaderStyle() : {}} className='admin__block' >
       {loaderDisplay === 'none' ? <>
         <nav className='admin__navbar' >
           <h1 className='admin__navbar--heading' >ADMIN PAGE</h1>
 
           <div className='admin__navbar--links__block' >
-            <button
-              className='admin__navbar--link icon'
-              onClick={navigateToUserPage}
-            >
-              User <LinkIcon />
-            </button>
-
             <button
               style={todoStyle}
               className='admin__navbar--link'
