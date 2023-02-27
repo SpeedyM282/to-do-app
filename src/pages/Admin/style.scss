@@ -2,12 +2,16 @@
 
 .admin__block {
   padding: 0 20px;
+
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 30px;
 }
 
 .admin__navbar {
+  width: 100%;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,8 +28,10 @@
 
 .admin__navbar--link {
   font-size: $large;
+
   background: none;
   border: none;
+
   cursor: pointer;
   transition: .5s;
 

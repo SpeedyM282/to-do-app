@@ -25,14 +25,17 @@ function Login() {
   return (
     <div className='login'>
       {role && <Navigate to={`/to-do-app/${role}`} />}
+
       <div className='login__inputs__block' >
         <h1 className='login__heading' >Login Page</h1>
+
         <Input
           label='Username'
           type='text'
           value={username}
           onChange={(value) => setUsername(value)}
         />
+
         <Input
           label='Password'
           type='password'
@@ -40,6 +43,7 @@ function Login() {
           onChange={(value) => setPassword(value)}
         />
       </div>
+
       <div className='block__buttons' >
         <Button
           txt='Login'

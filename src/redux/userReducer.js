@@ -1,8 +1,7 @@
-import { UPDATE_ROLE, UPDATE_ID, UPDATE_MODE } from './actionTypes';
+import { UPDATE_ROLE, UPDATE_ID } from './actionTypes';
 
 const defaultState = {
   role: null,
-  mode: false,
   id: null
 }
 
@@ -13,9 +12,6 @@ export function userReducer(state = defaultState, action) {
 
     case UPDATE_ID:
       return { ...state, id: action.payload };
-
-    case UPDATE_MODE:
-      return { ...state, mode: action.payload };
 
     default:
       return state;

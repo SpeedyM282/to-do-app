@@ -3,7 +3,15 @@ import Todo from "./components/Todo";
 localStorage.setItem('listsToggle', JSON.stringify({ showTodos: false, showUsers: false }));
 
 export function todoGenerator(id, title, description, createdBy) {
-  return <Todo key={id} id={id} title={title} description={description} createdBy={createdBy} />;
+  return (
+    <Todo
+      key={id}
+      id={id}
+      title={title}
+      description={description}
+      createdBy={createdBy}
+    />
+  );
 }
 
 export function todoDeleter(todos, id) {
@@ -13,7 +21,15 @@ export function todoDeleter(todos, id) {
 export function todoUpdater(todos, id, title, description) {
   return todos.map(e => {
     if (e.props.id === id) {
-      return <Todo key={id} id={id} title={title} description={description} createdBy={e.props.createdBy} />;
+      return (
+        <Todo
+          key={id}
+          id={id}
+          title={title}
+          description={description}
+          createdBy={e.props.createdBy}
+        />
+      );
     }
 
     return e;

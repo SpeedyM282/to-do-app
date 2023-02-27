@@ -11,7 +11,9 @@ function UserPage() {
 
   useEffect(() => {
     meGET()
-      .then(res => dispatch({ type: UPDATE_ROLE, payload: res.data.role }))
+      .then(res => {
+        dispatch({ type: UPDATE_ROLE, payload: res.data.role });
+      })
       .catch(() => window.location.href = '/to-do-app/');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -19,7 +21,6 @@ function UserPage() {
   function logout() {
     logoutPOST()
       .then(res => {
-        console.log(res);
         window.location.href = '/to-do-app/';
       })
       .catch(err => alert('Something went wrong:\n' + err));
@@ -27,10 +28,12 @@ function UserPage() {
 
   return (
     <div className='user__page__block' >
+
       <div className='user__page__header' >
         <h1 className='user__page__heading' >USER PAGE</h1>
         <Button txt='Logout' onClick={logout} />
       </div>
+
       <TodoList />
     </div>
   );

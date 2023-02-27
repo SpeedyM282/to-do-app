@@ -5,4 +5,3 @@ export const UPDATE_TODO = 'updTodos';
 export const ADD_TODO = 'addTodos';
 export const DELETE_TODO = 'deleteTodos';
 export const UPDATE_ID = 'updId';
-export const UPDATE_MODE = 'updMode';
