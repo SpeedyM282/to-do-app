@@ -76,7 +76,7 @@ function Admin() {
     <div className='admin__block' >
 
       <nav className='admin__navbar' >
-        <h1>ADMIN PAGE</h1>
+        <h1 className='admin__navbar--heading' >ADMIN PAGE</h1>
 
         <div className='admin__navbar--links__block' >
           <button

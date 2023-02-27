@@ -6,7 +6,8 @@ function Button({ txt, onClick }) {
     backgroundColor:
       txt === 'Logout' ? '#EB2E2E' :
         txt === 'Add' ? '#339900' :
-          '#007bff'
+          txt === 'Save' ? '#ffcc00' :
+            '#007bff'
   };
 
   return (
