@@ -14,9 +14,13 @@ function Todo({ id, title, description, createdBy }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editForm, setEditForm] = useState(<></>);
 
-  function updateTodo() {
-    dispatch({ type: UPDATE_ID, payload: id })
-    setEditForm(<Form btnTxt='Save' />);
+  function updIsEditMode(value) {
+    setIsEditMode(value);
+  }
+
+  function updateTodoMode() {
+    dispatch({ type: UPDATE_ID, payload: id });
+    setEditForm(<Form btnTxt='Save' onSave={updIsEditMode} />);
     setIsEditMode(true);
   }
 
@@ -32,10 +36,11 @@ function Todo({ id, title, description, createdBy }) {
   function buttons() {
     if (role === 'user' && createdBy !== 'user') {
       return <h5>Created By Admin</h5>;
+
     } else {
       return (
         <div className='todo__buttons__block' >
-          <EditIcon onClick={updateTodo} />
+          <EditIcon onClick={updateTodoMode} />
           <DeleteIcon onClick={deleteTodo} />
         </div>
       );

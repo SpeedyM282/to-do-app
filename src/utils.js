@@ -13,9 +13,9 @@ export function todoDeleter(todos, id) {
 export function todoUpdater(todos, id, title, description) {
   return todos.map(e => {
     if (e.props.id === id) {
-      e.props.title = title;
-      e.props.description = description;
+      return <Todo key={id} id={id} title={title} description={description} createdBy={e.props.createdBy} />;
     }
+
     return e;
   });
 }

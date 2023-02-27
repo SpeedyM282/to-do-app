@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { todoPOST, todoPUT, todoByIdGET } from '../../api/todosAPI';
-import { ADD_TODO } from '../../redux/actionTypes';
+import { ADD_TODO, UPDATE_TODO } from '../../redux/actionTypes';
 import Input from '../Input';
 import Button from '../Button';
 import Loader from '../Loader';
 import './style.scss';
 
-function Form({ btnTxt }) {
+function Form({ btnTxt, onSave }) {
   const dispatch = useDispatch();
   const todoID = useSelector(state => state.userReducer.id);
 
@@ -38,10 +38,21 @@ function Form({ btnTxt }) {
       alert('Title and Description lengths must be more than 3 characters!');
       return;
     }
+    setLoaderDisplay('flex');
 
     todoPUT(todoID, title, description)
-      .then(res => console.log(res))
-      .catch(err => alert('Something went wrong:\n' + err));
+      .then(res => {
+        const data = {
+          id: todoID,
+          title,
+          description
+        }
+
+        dispatch({ type: UPDATE_TODO, payload: data });
+        setLoaderDisplay('none');
+        onSave(false);
+      })
+    // .catch(err => alert('Something went wrong:\n' + err));
   }
 
   function addTodo() {
@@ -60,27 +71,32 @@ function Form({ btnTxt }) {
     setDescription('');
   }
 
-  return loaderDisplay === 'none' ? (
+  return (
     <div className='form' >
-      <div className='inputs__block'>
-        <Input
-          label='Title'
-          type='text'
-          max='15'
-          value={title}
-          onChange={(value) => setTitle(value)}
-        />
-        <Input
-          label='Description'
-          type='text'
-          max='30'
-          value={description}
-          onChange={(value) => setDescription(value)}
-        />
-      </div>
-      <Button txt={btnTxt} onClick={btnTxt === 'Add' ? addTodo : updateTodo} />
+      {loaderDisplay === 'none' ?
+        <>
+          <div className='inputs__block'>
+            <Input
+              label='Title'
+              type='text'
+              max='15'
+              value={title}
+              onChange={(value) => setTitle(value)}
+            />
+            <Input
+              label='Description'
+              type='text'
+              max='30'
+              value={description}
+              onChange={(value) => setDescription(value)}
+            />
+          </div>
+          <Button txt={btnTxt} onClick={btnTxt === 'Add' ? addTodo : updateTodo} />
+        </>
+        : <Loader display={loaderDisplay} />
+      }
     </div>
-  ) : <Loader display={loaderDisplay} />;
+  );
 }
 
 export default Form;
