@@ -14,6 +14,7 @@ function Form({ btnTxt, onSave }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [loaderDisplay, setLoaderDisplay] = useState('none');
+  const [isisabled, setisDisabled] = useState(false);
 
   const INPUT_MIN_LENGTH = 3;
 
@@ -38,10 +39,10 @@ function Form({ btnTxt, onSave }) {
       alert('Title and Description lengths must be more than 3 characters!');
       return;
     }
-    setLoaderDisplay('flex');
+    setisDisabled(true);
 
     todoPUT(todoID, title, description)
-      .then(res => {
+      .then(() => {
         const data = {
           id: todoID,
           title,
@@ -49,7 +50,7 @@ function Form({ btnTxt, onSave }) {
         }
 
         dispatch({ type: UPDATE_TODO, payload: data });
-        setLoaderDisplay('none');
+        setisDisabled(false);
         onSave(false);
       })
     // .catch(err => alert('Something went wrong:\n' + err));
@@ -60,9 +61,11 @@ function Form({ btnTxt, onSave }) {
       alert('Title and Description lengths must be more than 3 characters!');
       return;
     }
+    setisDisabled(true);
 
     todoPOST(title, description)
       .then(res => {
+        setisDisabled(false);
         dispatch({ type: ADD_TODO, payload: res.data });
       })
       .catch(err => alert('Something went wrong:\n' + err));
@@ -82,6 +85,7 @@ function Form({ btnTxt, onSave }) {
               max='15'
               value={title}
               onChange={(value) => setTitle(value)}
+              disabled={isisabled}
             />
             <Input
               label='Description'
@@ -89,9 +93,10 @@ function Form({ btnTxt, onSave }) {
               max='30'
               value={description}
               onChange={(value) => setDescription(value)}
+              disabled={isisabled}
             />
           </div>
-          <Button txt={btnTxt} onClick={btnTxt === 'Add' ? addTodo : updateTodo} />
+          <Button txt={btnTxt} onClick={btnTxt === 'Add' ? addTodo : updateTodo} disabled={isisabled} />
         </>
         : <Loader display={loaderDisplay} />
       }

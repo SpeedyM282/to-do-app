@@ -12,6 +12,7 @@ function Todo({ id, title, description, createdBy }) {
 
   const [show, setShow] = useState(true);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [editForm, setEditForm] = useState(<></>);
 
   function updIsEditMode(value) {
@@ -25,9 +26,12 @@ function Todo({ id, title, description, createdBy }) {
   }
 
   function deleteTodo() {
+    setIsDisabled(true);
     setShow(false);
+
     todoDELETE(id)
       .then(() => {
+        setIsDisabled(false);
         dispatch({ type: DELETE_TODO, payload: id });
       })
       .catch(err => alert('Something went wrong:\n' + err));
@@ -40,8 +44,8 @@ function Todo({ id, title, description, createdBy }) {
     } else {
       return (
         <div className='todo__buttons__block' >
-          <EditIcon onClick={updateTodoMode} />
-          <DeleteIcon onClick={deleteTodo} />
+          <EditIcon onClick={updateTodoMode} disabled={isDisabled} />
+          <DeleteIcon onClick={deleteTodo} disabled={isDisabled} />
         </div>
       );
     }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Checkbox from '../Checkbox';
 import './style.scss';
 
-function Input({ label, type, value, onChange, max }) {
+function Input({ label, type, value, onChange, max, disabled }) {
   const [inputType, setInputType] = useState('password');
 
   function toggleType() {
@@ -24,6 +24,7 @@ function Input({ label, type, value, onChange, max }) {
           onChange={(e) => onChange(e.target.value)}
           type={type === 'password' ? inputType : type}
           autoComplete="new-password"
+          disabled={disabled ? 'disabled' : ''}
           required
         />
         {
