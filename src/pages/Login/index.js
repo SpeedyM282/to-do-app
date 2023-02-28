@@ -54,9 +54,10 @@ function Login() {
 
           <div className='block__buttons' >
             <Button
-              txt='Login'
               onClick={handleClick}
-            />
+            >
+              Login
+            </Button>
           </div>
         </> : <Loader />
       }

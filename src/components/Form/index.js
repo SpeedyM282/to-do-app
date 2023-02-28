@@ -14,7 +14,7 @@ function Form({ btnTxt, onSave }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [loaderDisplay, setLoaderDisplay] = useState('none');
-  const [isisabled, setisDisabled] = useState(false);
+  const [isDisabled, setisDisabled] = useState(false);
 
   const INPUT_MIN_LENGTH = 3;
 
@@ -85,7 +85,7 @@ function Form({ btnTxt, onSave }) {
               max='15'
               value={title}
               onChange={(value) => setTitle(value)}
-              disabled={isisabled}
+              disabled={isDisabled}
             />
             <Input
               label='Description'
@@ -93,10 +93,12 @@ function Form({ btnTxt, onSave }) {
               max='30'
               value={description}
               onChange={(value) => setDescription(value)}
-              disabled={isisabled}
+              disabled={isDisabled}
             />
           </div>
-          <Button txt={btnTxt} onClick={btnTxt === 'Add' ? addTodo : updateTodo} disabled={isisabled} />
+          <Button onClick={btnTxt === 'Add' ? addTodo : updateTodo} disabled={isDisabled} >
+            {isDisabled ? <Loader display='flex' isSpinner={true} /> : btnTxt}
+          </Button>
         </>
         : <Loader display={loaderDisplay} />
       }

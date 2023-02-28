@@ -38,7 +38,9 @@ function UserPage() {
         <>
           <div className='user__page__header' >
             <h1 className='user__page__heading' >USER PAGE</h1>
-            <Button txt='Logout' onClick={logout} />
+            <Button onClick={logout} >
+              Logout
+            </Button>
           </div>
 
           <TodoList />

@@ -5,6 +5,7 @@ import { DELETE_TODO, UPDATE_ID } from '../../redux/actionTypes';
 import { DeleteIcon, EditIcon } from '../../Icons';
 import Form from '../Form';
 import './style.scss';
+import Loader from '../Loader';
 
 function Todo({ id, title, description, createdBy }) {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ function Todo({ id, title, description, createdBy }) {
       return (
         <div className='todo__buttons__block' >
           <EditIcon onClick={updateTodoMode} disabled={isDisabled} />
-          <DeleteIcon onClick={deleteTodo} disabled={isDisabled} />
+          {isDisabled ? <Loader display='flex' isSpinner={true} isDark={true} /> : <DeleteIcon onClick={deleteTodo} disabled={isDisabled} />}
         </div>
       );
     }

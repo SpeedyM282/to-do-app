@@ -101,7 +101,9 @@ function Admin() {
           </div>
 
           <div className='admin__navbar--buttons__block' >
-            <Button txt='Logout' onClick={logout} />
+            <Button onClick={logout} >
+              Logout
+            </Button>
           </div>
         </nav>
 
