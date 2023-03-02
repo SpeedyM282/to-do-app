@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteTodoById } from '../../api/todosAPI';
 import { buttonsTexts, CREATED_BY } from '../../data';
 import { DeleteIcon, EditIcon } from '../../Icons';
-import { updateID } from '../../store/userReducer';
+import { updateID } from '../../store/reducers/userReducer';
 import Form from '../Form';
 import Loader from '../Loader';
 import './style.scss';
 
-function Todo({ id, title, description, createdBy }) {
+const Todo = ({ id, title, description, createdBy }) => {
   const dispatch = useDispatch();
   const role = useSelector(state => state.userReducer.role);
 
@@ -17,17 +17,17 @@ function Todo({ id, title, description, createdBy }) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [editForm, setEditForm] = useState(<></>);
 
-  function updIsEditMode(value) {
+  const updIsEditMode = value => {
     setIsEditMode(value);
   }
 
-  function updateTodoMode() {
+  const updateTodoMode = () => {
     dispatch(updateID(id));
-    setEditForm(<Form btnTxt={buttonsTexts.SAVE} onSave={updIsEditMode} />);
+    setEditForm(<Form btnTxt={buttonsTexts.SAVE} onSave={updIsEditMode} isUpdating={isEditMode} />);
     setIsEditMode(true);
   }
 
-  function deleteTodo() {
+  const deleteTodo = () => {
     setIsDisabled(true);
     setShow(false);
 
@@ -39,7 +39,7 @@ function Todo({ id, title, description, createdBy }) {
       .catch(err => alert('Something went wrong:\n' + err));
   }
 
-  function buttons() {
+  const buttons = () => {
     if (role === 'user' && createdBy !== 'user') {
       return <h5>{CREATED_BY}</h5>;
 
@@ -53,16 +53,15 @@ function Todo({ id, title, description, createdBy }) {
     }
   }
 
-  return show && isEditMode ?
-    editForm : (
-      <div className='todo__block' >
-        <div className='todo__text__block' >
-          <h2 className='todo__text--title' >{title}</h2>
-          <p className='todo__text--description' >{description}</p>
-        </div>
-        {buttons()}
+  return show && isEditMode ? editForm : (
+    <div className='todo__block' >
+      <div className='todo__text__block' >
+        <h2 className='todo__text--title' >{title}</h2>
+        <p className='todo__text--description' >{description}</p>
       </div>
-    );
+      {buttons()}
+    </div>
+  );
 }
 
 export default Todo;

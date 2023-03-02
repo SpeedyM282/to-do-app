@@ -7,14 +7,14 @@ import Button from '../Button';
 import Loader from '../Loader';
 import './style.scss';
 
-function Form({ btnTxt, onSave }) {
+const Form = ({ btnTxt, onSave }) => {
   const dispatch = useDispatch();
   const todoID = useSelector(state => state.userReducer.id);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [loaderDisplay, setLoaderDisplay] = useState('none');
-  const [isDisabled, setisDisabled] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const INPUT_MIN_LENGTH = 3;
 
@@ -34,12 +34,12 @@ function Form({ btnTxt, onSave }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function updateTodo() {
+  const updateTodo = () => {
     if (title.length < INPUT_MIN_LENGTH || description.length < INPUT_MIN_LENGTH) {
       alert('Title and Description lengths must be more than 3 characters!');
       return;
     }
-    setisDisabled(true);
+    setIsDisabled(true);
 
     putTodoById(todoID, title, description)
       .then(() => {
@@ -50,25 +50,28 @@ function Form({ btnTxt, onSave }) {
         }
 
         dispatch(updateTodo(data));
-        setisDisabled(false);
+        setIsDisabled(false);
         onSave(false);
       })
-    // .catch(err => alert('Something went wrong:\n' + err));
+      .catch(err => alert('Something went wrong:\n' + err));
   }
 
-  function addTodo() {
+  const addTodo = () => {
     if (title.length < INPUT_MIN_LENGTH || description.length < INPUT_MIN_LENGTH) {
       alert('Title and Description lengths must be more than 3 characters!');
       return;
     }
-    setisDisabled(true);
+    setIsDisabled(true);
 
     postTodo(title, description)
       .then(res => {
-        setisDisabled(false);
+        setIsDisabled(false);
         dispatch(addTodo(res.data));
       })
-      .catch(err => alert('Something went wrong:\n' + err));
+      .catch(err => {
+        console.log(err)
+        alert('Something went wrong:\n' + err)
+      });
 
     setTitle('');
     setDescription('');
@@ -96,8 +99,16 @@ function Form({ btnTxt, onSave }) {
               disabled={isDisabled}
             />
           </div>
-          <Button onClick={btnTxt === 'Add' ? addTodo : updateTodo} disabled={isDisabled} >
-            {isDisabled ? <Loader display='flex' isSpinner={true} /> : btnTxt}
+          <Button
+            onClick={btnTxt === 'Add' ? addTodo : updateTodo}
+            type='submit'
+            disabled={isDisabled}
+          >
+            {
+              isDisabled ?
+                <Loader display='flex' isSpinner={true} /> :
+                btnTxt
+            }
           </Button>
         </>
         : <Loader display={loaderDisplay} />

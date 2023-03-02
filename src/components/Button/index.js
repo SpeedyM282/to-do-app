@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.scss';
 
-function Button({ children, onClick, disabled }) {
+function Button({ children, onClick, disabled, type }) {
   const DANGER_COLOR = '#EB2E2E';
   const WARNING_COLOR = '#ffcc00';
   const SUCCESS_COLOR = '#339900';
@@ -22,7 +22,7 @@ function Button({ children, onClick, disabled }) {
     <>
       <button
         className='button'
-        type='button'
+        type={type}
         style={style}
         onClick={onClick}
         disabled={disabled}

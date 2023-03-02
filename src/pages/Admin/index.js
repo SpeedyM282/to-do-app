@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { getMe, postLogout } from '../../api';
 import { loaderStyle } from '../../utils';
 import { pagesHeadings, buttonsTexts, adminPageLinks } from '../../data';
@@ -8,9 +8,11 @@ import TodoList from '../../components/TodoList';
 import UsersList from '../../components/UsersList';
 import './style.scss';
 import Loader from '../../components/Loader';
+import { updateRole } from '../../store/reducers/userReducer';
 
 const Admin = () => {
-  const role = useSelector(state => state.userReducer.role);
+  const dispatch = useDispatch();
+  // const role = useSelector(state => state.userReducer.role);
 
   const [showTodos, setShowTodos] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
@@ -24,16 +26,14 @@ const Admin = () => {
     fontWeight: showUsers ? 'bold' : 'normal'
   };
 
-  useLayoutEffect(() => {
-    setLoaderDisplay('flex');
+  useEffect(() => {
 
     getMe()
-      .then(() => {
-        if (role !== 'admin') {
-          setLoaderDisplay('none');
-          window.location.href = '/to-do-app/';
+      .then(res => {
+        if (res.data.role === 'admin') {
+          dispatch(updateRole(res.data.role));
         } else {
-          setLoaderDisplay('none');
+          window.location.href = '/to-do-app/'
         }
       })
       .catch(() => window.location.href = '/to-do-app/');

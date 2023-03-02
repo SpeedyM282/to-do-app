@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateRole } from '../../store/userReducer';
+import { updateRole } from '../../store/reducers/userReducer';
 import { postLogin } from '../../api';
 import { loaderStyle } from '../../utils';
 import { buttonsTexts, inputsLabels, pagesHeadings } from '../../data';
@@ -30,7 +30,7 @@ const Login = () => {
   }
 
   return (
-    <div style={loaderDisplay === 'flex' ? loaderStyle() : {}} className='login'>
+    <form style={loaderDisplay === 'flex' ? loaderStyle() : {}} className='login'>
       {loaderDisplay === 'none' ?
         <>
           {role && <Navigate to={`/to-do-app/${role}`} />}
@@ -56,13 +56,14 @@ const Login = () => {
           <div className='block__buttons' >
             <Button
               onClick={handleClick}
+              type='submit'
             >
               {buttonsTexts.LOGIN}
             </Button>
           </div>
         </> : <Loader />
       }
-    </div>
+    </form>
   );
 }
 

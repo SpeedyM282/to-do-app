@@ -14,7 +14,7 @@ function UsersList() {
       .then(res => {
         setLoaderDisplay('none');
         setUsers(res.data.map((e, i) => {
-          <User key={i} login={e.login} role={e.role} name={e.name} />
+          return <User key={i} login={e.login} role={e.role} name={e.name} />
         }));
       })
       .catch(error => alert('Something Bad Happened:\n' + error));

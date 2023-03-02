@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTodos } from '../../api/todosAPI';
-import { assignTodos } from '../../store/todosReducer';
+import { buttonsTexts } from '../../data';
+import { assignTodos } from '../../store/reducers/todosReducer';
 import Form from '../Form';
 import Loader from '../Loader';
 import './style.scss';
@@ -24,7 +25,7 @@ function TodoList() {
 
   return (
     <div className='todolist__block' >
-      <Form btnTxt='Add' />
+      <Form btnTxt={buttonsTexts.ADD} />
       <div className='todolist__list__block' >
         <Loader display={loaderDisplay} />
         {todos}
