@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { todoPOST, todoPUT, todoByIdGET } from '../../api/todosAPI';
-import { ADD_TODO, UPDATE_TODO } from '../../redux/actionTypes';
+import { postTodo, getTodoById, putTodoById } from '../../api/todosAPI';
+import { inputsLabels } from '../../data';
 import Input from '../Input';
 import Button from '../Button';
 import Loader from '../Loader';
@@ -22,7 +22,7 @@ function Form({ btnTxt, onSave }) {
     if (btnTxt === 'Save') {
       setLoaderDisplay('flex');
 
-      todoByIdGET(todoID)
+      getTodoById(todoID)
         .then(res => {
           setLoaderDisplay('none');
 
@@ -41,7 +41,7 @@ function Form({ btnTxt, onSave }) {
     }
     setisDisabled(true);
 
-    todoPUT(todoID, title, description)
+    putTodoById(todoID, title, description)
       .then(() => {
         const data = {
           id: todoID,
@@ -49,7 +49,7 @@ function Form({ btnTxt, onSave }) {
           description
         }
 
-        dispatch({ type: UPDATE_TODO, payload: data });
+        dispatch(updateTodo(data));
         setisDisabled(false);
         onSave(false);
       })
@@ -63,10 +63,10 @@ function Form({ btnTxt, onSave }) {
     }
     setisDisabled(true);
 
-    todoPOST(title, description)
+    postTodo(title, description)
       .then(res => {
         setisDisabled(false);
-        dispatch({ type: ADD_TODO, payload: res.data });
+        dispatch(addTodo(res.data));
       })
       .catch(err => alert('Something went wrong:\n' + err));
 
@@ -80,7 +80,7 @@ function Form({ btnTxt, onSave }) {
         <>
           <div className='inputs__block'>
             <Input
-              label='Title'
+              label={inputsLabels.TODO_TITLE}
               type='text'
               max='15'
               value={title}
@@ -88,7 +88,7 @@ function Form({ btnTxt, onSave }) {
               disabled={isDisabled}
             />
             <Input
-              label='Description'
+              label={inputsLabels.TODO_DESCRIPTION}
               type='text'
               max='30'
               value={description}

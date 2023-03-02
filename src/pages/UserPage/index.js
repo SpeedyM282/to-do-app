@@ -1,30 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { logoutPOST, meGET } from '../../api';
-import { UPDATE_ROLE } from '../../redux/actionTypes';
+import React, { useState, useLayoutEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { getMe, postLogout } from '../../api';
 import { loaderStyle } from '../../utils';
+import { pagesHeadings, buttonsTexts } from '../../data';
 import TodoList from '../../components/TodoList';
 import Button from '../../components/Button';
 import './style.scss';
 import Loader from '../../components/Loader';
 
-function UserPage() {
-  const dispatch = useDispatch();
+const UserPage = () => {
+  const role = useSelector(state => state.userReducer.role);
+
   const [loaderDisplay, setLoaderDisplay] = useState('none');
 
-  useEffect(() => {
-    meGET()
-      .then(res => {
-        dispatch({ type: UPDATE_ROLE, payload: res.data.role });
+  useLayoutEffect(() => {
+    setLoaderDisplay('flex');
+
+    getMe()
+      .then(() => {
+        if (role !== 'admin') {
+          setLoaderDisplay('none');
+          window.location.href = '/to-do-app/';
+        } else {
+          setLoaderDisplay('none');
+        }
       })
       .catch(() => window.location.href = '/to-do-app/');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function logout() {
+  const logout = () => {
     setLoaderDisplay('flex');
 
-    logoutPOST()
+    postLogout()
       .then(() => {
         setLoaderDisplay('none');
         window.location.href = '/to-do-app/';
@@ -37,9 +45,9 @@ function UserPage() {
       {loaderDisplay === 'none' ?
         <>
           <div className='user__page__header' >
-            <h1 className='user__page__heading' >USER PAGE</h1>
+            <h1 className='user__page__heading' >{pagesHeadings.USER_PAGE}</h1>
             <Button onClick={logout} >
-              Logout
+              {buttonsTexts.LOGOUT}
             </Button>
           </div>
 

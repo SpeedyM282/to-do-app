@@ -29,4 +29,5 @@ export const adminPageLinks = {
   USERS_LIST: 'Users List'
 };
 
+export const CREATED_BY = 'Created By Admin';
 export const CHECKBOX_LABEL = 'Show Password';

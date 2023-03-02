@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CHECKBOX_LABEL } from '../../data';
 import Checkbox from '../Checkbox';
 import './style.scss';
 
@@ -7,9 +8,9 @@ function Input({ label, type, value, onChange, max, disabled }) {
 
   function toggleType() {
     if (inputType === 'password') {
-      setInputType('text')
+      setInputType('text');
     } else {
-      setInputType('password')
+      setInputType('password');
     }
   }
 
@@ -29,7 +30,7 @@ function Input({ label, type, value, onChange, max, disabled }) {
         />
         {
           type === 'password' &&
-          <Checkbox label='Show Password' onClick={toggleType} />
+          <Checkbox label={CHECKBOX_LABEL} onClick={toggleType} />
         }
       </label>
     </>

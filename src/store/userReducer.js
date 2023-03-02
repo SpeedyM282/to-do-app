@@ -1,4 +1,5 @@
-import { UPDATE_ROLE, UPDATE_ID } from './actionTypes';
+const UPDATE_ROLE = 'UPDATE_ROLE';
+const UPDATE_ID = 'UPDATE_ID';
 
 const defaultState = {
   role: null,
@@ -18,3 +19,6 @@ export function userReducer(state = defaultState, action) {
   }
 }
 
+export const updateRole = payload => ({ type: UPDATE_ROLE, payload });
+
+export const updateID = payload => ({ type: UPDATE_ID, payload });

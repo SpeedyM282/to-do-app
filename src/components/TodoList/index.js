@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { todosGET } from '../../api/todosAPI';
-import { ASSIGN_TODOS } from '../../redux/actionTypes';
+import { getTodos } from '../../api/todosAPI';
+import { assignTodos } from '../../store/todosReducer';
 import Form from '../Form';
 import Loader from '../Loader';
 import './style.scss';
@@ -13,10 +13,10 @@ function TodoList() {
   const [loaderDisplay, setLoaderDisplay] = useState('flex');
 
   useEffect(() => {
-    todosGET()
+    getTodos()
       .then(res => {
         setLoaderDisplay('none')
-        dispatch({ type: ASSIGN_TODOS, payload: res.data });
+        dispatch(assignTodos(res.data));
       })
       .catch(err => alert('Something went wrong:\n' + err));
     // eslint-disable-next-line react-hooks/exhaustive-deps

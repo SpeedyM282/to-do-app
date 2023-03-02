@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { todoDELETE } from '../../api/todosAPI';
-import { DELETE_TODO, UPDATE_ID } from '../../redux/actionTypes';
+import { deleteTodoById } from '../../api/todosAPI';
+import { buttonsTexts, CREATED_BY } from '../../data';
 import { DeleteIcon, EditIcon } from '../../Icons';
+import { updateID } from '../../store/userReducer';
 import Form from '../Form';
-import './style.scss';
 import Loader from '../Loader';
+import './style.scss';
 
 function Todo({ id, title, description, createdBy }) {
   const dispatch = useDispatch();
@@ -21,8 +22,8 @@ function Todo({ id, title, description, createdBy }) {
   }
 
   function updateTodoMode() {
-    dispatch({ type: UPDATE_ID, payload: id });
-    setEditForm(<Form btnTxt='Save' onSave={updIsEditMode} />);
+    dispatch(updateID(id));
+    setEditForm(<Form btnTxt={buttonsTexts.SAVE} onSave={updIsEditMode} />);
     setIsEditMode(true);
   }
 
@@ -30,17 +31,17 @@ function Todo({ id, title, description, createdBy }) {
     setIsDisabled(true);
     setShow(false);
 
-    todoDELETE(id)
+    deleteTodoById(id)
       .then(() => {
         setIsDisabled(false);
-        dispatch({ type: DELETE_TODO, payload: id });
+        dispatch(deleteTodo(id));
       })
       .catch(err => alert('Something went wrong:\n' + err));
   }
 
   function buttons() {
     if (role === 'user' && createdBy !== 'user') {
-      return <h5>Created By Admin</h5>;
+      return <h5>{CREATED_BY}</h5>;
 
     } else {
       return (
