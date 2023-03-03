@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { postTodo, getTodoById, putTodoById } from '../../api/todosAPI';
 import { inputsLabels } from '../../data';
+import { addTodoAction, updateTodoAction } from '../../store/reducers/todosReducer';
 import Input from '../Input';
 import Button from '../Button';
 import Loader from '../Loader';
@@ -12,11 +13,13 @@ const Form = ({ btnTxt, onSave }) => {
   const todoID = useSelector(state => state.userReducer.id);
 
   const [title, setTitle] = useState('');
+  const [isError, setIsError] = useState(false);
   const [description, setDescription] = useState('');
-  const [loaderDisplay, setLoaderDisplay] = useState('none');
   const [isDisabled, setIsDisabled] = useState(false);
+  const [loaderDisplay, setLoaderDisplay] = useState('none');
 
   const INPUT_MIN_LENGTH = 3;
+  const INPUT_MAX_LENGTH = 30;
 
   useEffect(() => {
     if (btnTxt === 'Save') {
@@ -36,9 +39,10 @@ const Form = ({ btnTxt, onSave }) => {
 
   const updateTodo = () => {
     if (title.length < INPUT_MIN_LENGTH || description.length < INPUT_MIN_LENGTH) {
-      alert('Title and Description lengths must be more than 3 characters!');
+      setIsError(true);
       return;
     }
+    setIsError(false);
     setIsDisabled(true);
 
     putTodoById(todoID, title, description)
@@ -49,7 +53,7 @@ const Form = ({ btnTxt, onSave }) => {
           description
         }
 
-        dispatch(updateTodo(data));
+        dispatch(updateTodoAction(data));
         setIsDisabled(false);
         onSave(false);
       })
@@ -58,18 +62,20 @@ const Form = ({ btnTxt, onSave }) => {
 
   const addTodo = () => {
     if (title.length < INPUT_MIN_LENGTH || description.length < INPUT_MIN_LENGTH) {
-      alert('Title and Description lengths must be more than 3 characters!');
+      setIsError(true);
       return;
     }
+
+    setIsError(false);
     setIsDisabled(true);
 
     postTodo(title, description)
       .then(res => {
         setIsDisabled(false);
-        dispatch(addTodo(res.data));
+        dispatch(addTodoAction(res.data));
       })
       .catch(err => {
-        console.log(err)
+        setIsDisabled(false);
         alert('Something went wrong:\n' + err)
       });
 
@@ -78,14 +84,16 @@ const Form = ({ btnTxt, onSave }) => {
   }
 
   return (
-    <div style={{ boxShadow: loaderDisplay === 'flex' && 'none' }} className='form' >
+    <form style={{ boxShadow: loaderDisplay === 'flex' && 'none' }} className='form' >
       {loaderDisplay === 'none' ?
         <>
           <div className='inputs__block'>
             <Input
               label={inputsLabels.TODO_TITLE}
               type='text'
-              max='15'
+              isError={isError}
+              max={INPUT_MAX_LENGTH}
+              min={INPUT_MIN_LENGTH}
               value={title}
               onChange={(value) => setTitle(value)}
               disabled={isDisabled}
@@ -93,7 +101,9 @@ const Form = ({ btnTxt, onSave }) => {
             <Input
               label={inputsLabels.TODO_DESCRIPTION}
               type='text'
-              max='30'
+              isError={isError}
+              max={INPUT_MAX_LENGTH}
+              min={INPUT_MIN_LENGTH}
               value={description}
               onChange={(value) => setDescription(value)}
               disabled={isDisabled}
@@ -113,7 +123,7 @@ const Form = ({ btnTxt, onSave }) => {
         </>
         : <Loader display={loaderDisplay} />
       }
-    </div>
+    </form>
   );
 }
 

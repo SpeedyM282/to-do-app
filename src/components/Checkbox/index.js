@@ -10,7 +10,6 @@ function Checkbox({ label, onClick }) {
           className='form__checkbox'
           type="checkbox"
           onClick={onClick}
-          required
         />
       </div>
     </>

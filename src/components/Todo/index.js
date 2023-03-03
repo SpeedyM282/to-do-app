@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteTodoById } from '../../api/todosAPI';
 import { buttonsTexts, CREATED_BY } from '../../data';
 import { DeleteIcon, EditIcon } from '../../Icons';
+import { deleteTodoAction } from '../../store/reducers/todosReducer';
 import { updateID } from '../../store/reducers/userReducer';
 import Form from '../Form';
 import Loader from '../Loader';
@@ -34,7 +35,7 @@ const Todo = ({ id, title, description, createdBy }) => {
     deleteTodoById(id)
       .then(() => {
         setIsDisabled(false);
-        dispatch(deleteTodo(id));
+        dispatch(deleteTodoAction(id));
       })
       .catch(err => alert('Something went wrong:\n' + err));
   }

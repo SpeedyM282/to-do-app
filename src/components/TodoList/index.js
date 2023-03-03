@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTodos } from '../../api/todosAPI';
 import { buttonsTexts } from '../../data';
-import { assignTodos } from '../../store/reducers/todosReducer';
+import { assignTodosAction } from '../../store/reducers/todosReducer';
 import Form from '../Form';
 import Loader from '../Loader';
 import './style.scss';
@@ -17,7 +17,7 @@ function TodoList() {
     getTodos()
       .then(res => {
         setLoaderDisplay('none')
-        dispatch(assignTodos(res.data));
+        dispatch(assignTodosAction(res.data));
       })
       .catch(err => alert('Something went wrong:\n' + err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
