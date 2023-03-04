@@ -3,12 +3,12 @@ import { useDispatch } from 'react-redux';
 import { getMe, postLogout } from '../../api';
 import { loaderStyle } from '../../utils';
 import { pagesHeadings, buttonsTexts, adminPageLinks } from '../../data';
+import { updateRoleAction } from '../../store/reducers/userReducer';
 import Button from '../../components/Button';
 import TodoList from '../../components/TodoList';
 import UsersList from '../../components/UsersList';
 import './style.scss';
 import Loader from '../../components/Loader';
-import { updateRole } from '../../store/reducers/userReducer';
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const Admin = () => {
     getMe()
       .then(res => {
         if (res.data.role === 'admin') {
-          dispatch(updateRole(res.data.role));
+          dispatch(updateRoleAction(res.data.role));
         } else {
           window.location.href = '/to-do-app/'
         }

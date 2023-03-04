@@ -1,6 +1,6 @@
 import './style.scss';
 
-function Loader({ display, isSpinner, isDark }) {
+const Loader = ({ display, isSpinner, isDark }) => {
   const style = {
     display: display,
     width: isSpinner && '24px',

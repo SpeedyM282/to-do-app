@@ -19,6 +19,6 @@ export function userReducer(state = defaultState, action) {
   }
 }
 
-export const updateRole = payload => ({ type: UPDATE_ROLE, payload });
+export const updateRoleAction = payload => ({ type: UPDATE_ROLE, payload });
 
-export const updateID = payload => ({ type: UPDATE_ID, payload });
+export const updateIdAction = payload => ({ type: UPDATE_ID, payload });

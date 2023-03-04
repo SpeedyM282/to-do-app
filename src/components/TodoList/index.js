@@ -7,7 +7,7 @@ import Form from '../Form';
 import Loader from '../Loader';
 import './style.scss';
 
-function TodoList() {
+const TodoList = () => {
   const dispatch = useDispatch();
   const todos = useSelector(state => state.todosReducer);
 
@@ -26,6 +26,7 @@ function TodoList() {
   return (
     <div className='todolist__block' >
       <Form btnTxt={buttonsTexts.ADD} />
+
       <div className='todolist__list__block' >
         <Loader display={loaderDisplay} />
         {todos}

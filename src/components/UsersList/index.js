@@ -5,7 +5,7 @@ import Loader from '../Loader';
 import User from '../User';
 import './style.scss';
 
-function UsersList() {
+const UsersList = () => {
   const [users, setUsers] = useState([]);
   const [loaderDisplay, setLoaderDisplay] = useState('flex');
 
@@ -22,11 +22,20 @@ function UsersList() {
 
   return (
     <div className='userslist__block' >
-      <div className='userlist__headings--block'>
-        <p className='userlist__headings' >{usersListHeadings.LOGIN_USERNAME}:</p>
-        <p className='userlist__headings' >{usersListHeadings.ROLE}:</p>
-        <p className='userlist__headings' >{usersListHeadings.NAME}:</p>
+      <div className='userlist__headings--block' >
+        <p className='userlist__headings' >
+          {usersListHeadings.LOGIN_USERNAME}:
+        </p>
+
+        <p className='userlist__headings' >
+          {usersListHeadings.ROLE}:
+        </p>
+
+        <p className='userlist__headings' >
+          {usersListHeadings.NAME}:
+        </p>
       </div>
+
       <div className='userslist' >
         <Loader display={loaderDisplay} />
         {users}

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteTodoById } from '../../api/todosAPI';
-import { buttonsTexts, CREATED_BY } from '../../data';
 import { DeleteIcon, EditIcon } from '../../Icons';
+import { buttonsTexts, CREATED_BY } from '../../data';
+import { deleteTodoById, getTodoById } from '../../api/todosAPI';
+import { updateIdAction } from '../../store/reducers/userReducer';
 import { deleteTodoAction } from '../../store/reducers/todosReducer';
-import { updateID } from '../../store/reducers/userReducer';
 import Form from '../Form';
 import Loader from '../Loader';
 import './style.scss';
@@ -14,27 +14,46 @@ const Todo = ({ id, title, description, createdBy }) => {
   const role = useSelector(state => state.userReducer.role);
 
   const [show, setShow] = useState(true);
+  const [isFetched, setIsFetched] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [editClicked, setEditClicked] = useState(false);
+  const [deleteClicked, setDeleteClicked] = useState(false);
   const [editForm, setEditForm] = useState(<></>);
 
-  const updIsEditMode = value => {
-    setIsEditMode(value);
+  const updIsEditMode = () => {
+    setIsEditMode(false);
   }
 
   const updateTodoMode = () => {
-    dispatch(updateID(id));
-    setEditForm(<Form btnTxt={buttonsTexts.SAVE} onSave={updIsEditMode} isUpdating={isEditMode} />);
-    setIsEditMode(true);
+    setEditClicked(true);
+
+    getTodoById(id)
+      .then(res => {
+        dispatch(updateIdAction(id));
+
+        setEditForm(
+          <Form
+            onSave={updIsEditMode}
+            btnTxt={buttonsTexts.SAVE}
+            titleForUpd={res.data.title}
+            descriptionForUpd={res.data.description}
+          />
+        );
+        setEditClicked(false);
+
+        setIsFetched(true);
+        setIsEditMode(true);
+      })
+      .catch(err => alert('Something went wrong:\n' + err));
   }
 
   const deleteTodo = () => {
-    setIsDisabled(true);
+    setDeleteClicked(true);
     setShow(false);
 
     deleteTodoById(id)
       .then(() => {
-        setIsDisabled(false);
+        setDeleteClicked(false);
         dispatch(deleteTodoAction(id));
       })
       .catch(err => alert('Something went wrong:\n' + err));
@@ -47,8 +66,17 @@ const Todo = ({ id, title, description, createdBy }) => {
     } else {
       return (
         <div className='todo__buttons__block' >
-          <EditIcon onClick={updateTodoMode} disabled={isDisabled} />
-          {isDisabled ? <Loader display='flex' isSpinner={true} isDark={true} /> : <DeleteIcon onClick={deleteTodo} disabled={isDisabled} />}
+          {
+            editClicked && !isFetched ?
+              <Loader display='flex' isSpinner={true} isDark={true} /> :
+              <EditIcon onClick={updateTodoMode} disabled={deleteClicked} />
+          }
+
+          {
+            deleteClicked ?
+              <Loader display='flex' isSpinner={true} isDark={true} /> :
+              <DeleteIcon onClick={deleteTodo} disabled={editClicked} />
+          }
         </div>
       );
     }
@@ -56,10 +84,17 @@ const Todo = ({ id, title, description, createdBy }) => {
 
   return show && isEditMode ? editForm : (
     <div className='todo__block' >
+
       <div className='todo__text__block' >
-        <h2 className='todo__text--title' >{title}</h2>
-        <p className='todo__text--description' >{description}</p>
+        <h2 className='todo__text--title' >
+          {title}
+        </h2>
+
+        <p className='todo__text--description' >
+          {description}
+        </p>
       </div>
+
       {buttons()}
     </div>
   );

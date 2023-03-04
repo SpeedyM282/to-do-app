@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateRole } from '../../store/reducers/userReducer';
+import { updateRoleAction } from '../../store/reducers/userReducer';
 import { postLogin } from '../../api';
 import { buttonsTexts, inputsLabels, pagesHeadings } from '../../data';
 import Button from '../../components/Button';
@@ -28,9 +28,9 @@ const Login = () => {
     postLogin(username, password)
       .then(res => {
         setLoaderDisplay('none');
-        dispatch(updateRole(res.data.role));
+        dispatch(updateRoleAction(res.data.role));
       })
-      .catch((err) => {
+      .catch(() => {
         setIsError(true);
         setLoaderDisplay('none');
       });
@@ -60,18 +60,16 @@ const Login = () => {
         />
       </div>
 
-      <div className='block__buttons' >
-        <Button
-          onClick={handleClick}
-          type='submit'
-        >
-          {
-            loaderDisplay === 'none' ?
-              buttonsTexts.LOGIN :
-              <Loader display={loaderDisplay} isSpinner={true} />
-          }
-        </Button>
-      </div>
+      <Button
+        onClick={handleClick}
+        type='submit'
+      >
+        {
+          loaderDisplay === 'none' ?
+            buttonsTexts.LOGIN :
+            <Loader display={loaderDisplay} isSpinner={true} />
+        }
+      </Button>
     </form>
   );
 }
