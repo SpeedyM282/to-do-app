@@ -11,8 +11,12 @@
   gap: 7px;
 }
 
+.edit--mode {
+  width: 175px;
+}
+
 .form__input {
-  width: 210;
+  width: 90%;
   height: 35px;
 
   padding: 0 7px;
@@ -26,4 +30,15 @@
 
 .form__input:focus {
   outline: none;
+}
+
+.input--error {
+  border: 1px solid $danger-color;
+}
+
+.error--message {
+  margin: 0;
+  padding: 0 5px;
+  font-size: 12px;
+  color: $danger-color;
 }

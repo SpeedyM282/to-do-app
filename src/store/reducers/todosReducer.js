@@ -1,5 +1,10 @@
-import { ADD_TODO, DELETE_TODO, UPDATE_TODO, ASSIGN_TODOS } from './actionTypes';
-import { todoGenerator, todoDeleter, todoUpdater, todosAssigner } from '../utils';
+import { todoGenerator, todoDeleter, todoUpdater, todosAssigner } from '../../utils';
+
+const ASSIGN_TODOS = 'ASSIGN_TODOS';
+const UPDATE_TODO = 'UPDATE_TODO';
+const ADD_TODO = 'ADD_TODO';
+const DELETE_TODO = 'DELETE_TODO';
+
 
 const defaultState = [];
 
@@ -24,3 +29,10 @@ export function todosReducer(state = defaultState, action) {
   }
 }
 
+export const assignTodosAction = payload => ({ type: ASSIGN_TODOS, payload });
+
+export const addTodoAction = payload => ({ type: ADD_TODO, payload });
+
+export const deleteTodoAction = payload => ({ type: DELETE_TODO, payload });
+
+export const updateTodoAction = payload => ({ type: UPDATE_TODO, payload });

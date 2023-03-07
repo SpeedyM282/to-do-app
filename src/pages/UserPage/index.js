@@ -1,31 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { logoutPOST, meGET } from '../../api';
-import { UPDATE_ROLE } from '../../redux/actionTypes';
-import { loaderStyle } from '../../utils';
-import TodoList from '../../components/TodoList';
+import { getMe, postLogout } from '../../api';
+import { pagesHeadings, buttonsTexts } from '../../data';
+import { updateRoleAction } from '../../store/reducers/userReducer';
 import Button from '../../components/Button';
-import './style.scss';
 import Loader from '../../components/Loader';
+import TodoList from '../../components/TodoList';
+import './style.scss';
 
-function UserPage() {
+const UserPage = () => {
   const dispatch = useDispatch();
+
+  const [isDisabled, setIsDisabled] = useState(false);
   const [loaderDisplay, setLoaderDisplay] = useState('none');
 
   useEffect(() => {
-    meGET()
-      .then(res => {
-        dispatch({ type: UPDATE_ROLE, payload: res.data.role });
+    getMe()
+      .then((res) => {
+        if (res.data.role === 'user') {
+          dispatch(updateRoleAction(res.data.role));
+        } else {
+          alert('You are not logged in as User!');
+          window.location.href = '/to-do-app/';
+        }
       })
-      .catch(() => window.location.href = '/to-do-app/');
+      .catch(() => {
+        alert('You are not logged in!');
+        window.location.href = '/to-do-app/';
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function logout() {
+  const logout = () => {
     setLoaderDisplay('flex');
+    setIsDisabled(true);
 
-    logoutPOST()
+    postLogout()
       .then(() => {
+        setIsDisabled(false);
         setLoaderDisplay('none');
         window.location.href = '/to-do-app/';
       })
@@ -33,19 +45,20 @@ function UserPage() {
   }
 
   return (
-    <div style={loaderDisplay === 'flex' ? loaderStyle() : {}} className='user__page__block' >
-      {loaderDisplay === 'none' ?
-        <>
-          <div className='user__page__header' >
-            <h1 className='user__page__heading' >USER PAGE</h1>
-            <Button onClick={logout} >
-              Logout
-            </Button>
-          </div>
+    <div className='user__page__block' >
+      <div className='user__page__header' >
+        <h1 className='user__page__heading' >{pagesHeadings.USER_PAGE}</h1>
 
-          <TodoList />
-        </> : <Loader />
-      }
+        <Button onClick={logout} disabled={isDisabled} >
+          {
+            loaderDisplay === 'none' ?
+              buttonsTexts.LOGOUT :
+              <Loader display={loaderDisplay} isSpinner={true} />
+          }
+        </Button>
+      </div>
+
+      <TodoList />
     </div>
   );
 }

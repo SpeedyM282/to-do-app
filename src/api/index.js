@@ -5,7 +5,7 @@ export const client = axios.create({
   baseURL: 'http://localhost:3000/api/v1'
 });
 
-export function loginPOST(username, password) {
+export function postLogin(username, password) {
   const data = {
     "login": username,
     "password": password
@@ -14,14 +14,14 @@ export function loginPOST(username, password) {
   return client.post('/login', data);
 }
 
-export function logoutPOST() {
+export function postLogout() {
   return client.post('/logout');
 }
 
-export function meGET() {
+export function getMe() {
   return client.get('/me');
 }
 
-export function usersGET() {
+export function getUsers() {
   return client.get('/users');
 }

@@ -1,67 +1,81 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { UPDATE_ROLE } from '../../redux/actionTypes';
-import { loginPOST } from '../../api';
-import { loaderStyle } from '../../utils';
+import { updateRoleAction } from '../../store/reducers/userReducer';
+import { postLogin } from '../../api';
+import { buttonsTexts, inputsLabels, pagesHeadings } from '../../data';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import './style.scss';
 import Loader from '../../components/Loader';
 
-function Login() {
+const Login = () => {
   const dispatch = useDispatch();
   const role = useSelector(state => state.userReducer.role);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isError, setIsError] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [loaderDisplay, setLoaderDisplay] = useState('none');
 
-  function handleClick() {
+  const handleClick = () => {
+    if (username.length === 0 || password.length === 0) {
+      setIsError(true);
+      return;
+    }
     setLoaderDisplay('flex');
+    setIsDisabled(true);
 
-    loginPOST(username, password)
+    postLogin(username, password)
       .then(res => {
+        setIsDisabled(false);
         setLoaderDisplay('none');
-        dispatch({ type: UPDATE_ROLE, payload: res.data.role });
+        dispatch(updateRoleAction(res.data.role));
       })
-      .catch((err) => alert('Something went wrong:\n' + err));
+      .catch(() => {
+        setIsDisabled(false);
+        setIsError(true);
+        setLoaderDisplay('none');
+      });
   }
 
   return (
-    <div style={loaderDisplay === 'flex' ? loaderStyle() : {}} className='login'>
-      {loaderDisplay === 'none' ?
-        <>
-          {role && <Navigate to={`/to-do-app/${role}`} />}
+    <form className='login'>
+      {role && <Navigate to={`/to-do-app/${role}`} />}
 
-          <div className='login__inputs__block' >
-            <h1 className='login__heading' >Login Page</h1>
+      <div className='login__inputs__block' >
+        <h1 className='login__heading' >{pagesHeadings.LOGIN_PAGE}</h1>
 
-            <Input
-              label='Username'
-              type='text'
-              value={username}
-              onChange={(value) => setUsername(value)}
-            />
+        <Input
+          label={inputsLabels.USERNAME}
+          type='text'
+          value={username}
+          onChange={(value) => setUsername(value)}
+          isError={isError}
+        />
 
-            <Input
-              label='Password'
-              type='password'
-              value={password}
-              onChange={(value) => setPassword(value)}
-            />
-          </div>
+        <Input
+          label={inputsLabels.PASSWORD}
+          type='password'
+          value={password}
+          onChange={(value) => setPassword(value)}
+          isError={isError}
+        />
+      </div>
 
-          <div className='block__buttons' >
-            <Button
-              onClick={handleClick}
-            >
-              Login
-            </Button>
-          </div>
-        </> : <Loader />
-      }
-    </div>
+      <Button
+        onClick={handleClick}
+        type='submit'
+        disabled={isDisabled}
+      >
+        {
+          loaderDisplay === 'none' ?
+            buttonsTexts.LOGIN :
+            <Loader display={loaderDisplay} isSpinner={true} />
+        }
+      </Button>
+    </form>
   );
 }
 

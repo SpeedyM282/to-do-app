@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.scss';
 
-function Checkbox({ label, onClick }) {
+const Checkbox = ({ label, onClick }) => {
   return (
     <>
       <div className='form__checkbox__wrapper' >
@@ -10,7 +10,6 @@ function Checkbox({ label, onClick }) {
           className='form__checkbox'
           type="checkbox"
           onClick={onClick}
-          required
         />
       </div>
     </>

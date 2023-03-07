@@ -1,108 +1,123 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { todoPOST, todoPUT, todoByIdGET } from '../../api/todosAPI';
-import { ADD_TODO, UPDATE_TODO } from '../../redux/actionTypes';
+import { inputsLabels } from '../../data';
+import { postTodo, putTodoById } from '../../api/todosAPI';
+import { updateIsDisabledAction } from '../../store/reducers/userReducer';
+import { addTodoAction, updateTodoAction } from '../../store/reducers/todosReducer';
 import Input from '../Input';
 import Button from '../Button';
 import Loader from '../Loader';
 import './style.scss';
 
-function Form({ btnTxt, onSave }) {
+const Form = ({ btnTxt, onSave, titleForUpd, descriptionForUpd }) => {
   const dispatch = useDispatch();
   const todoID = useSelector(state => state.userReducer.id);
 
   const [title, setTitle] = useState('');
+  const [isError, setIsError] = useState(false);
   const [description, setDescription] = useState('');
-  const [loaderDisplay, setLoaderDisplay] = useState('none');
-  const [isDisabled, setisDisabled] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const isEditMode = (btnTxt === 'Save');
 
   const INPUT_MIN_LENGTH = 3;
+  const INPUT_MAX_LENGTH = 30;
 
   useEffect(() => {
-    if (btnTxt === 'Save') {
-      setLoaderDisplay('flex');
-
-      todoByIdGET(todoID)
-        .then(res => {
-          setLoaderDisplay('none');
-
-          setTitle(res.data.title);
-          setDescription(res.data.description);
-        })
-        .catch(err => alert('Something went wrong:\n' + err));
+    if (isEditMode) {
+      setTitle(titleForUpd);
+      setDescription(descriptionForUpd);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function updateTodo() {
+  const updateTodo = () => {
     if (title.length < INPUT_MIN_LENGTH || description.length < INPUT_MIN_LENGTH) {
-      alert('Title and Description lengths must be more than 3 characters!');
+      setIsError(true);
       return;
     }
-    setisDisabled(true);
 
-    todoPUT(todoID, title, description)
+    setIsError(false);
+    setIsDisabled(true);
+
+    putTodoById(todoID, title, description)
       .then(() => {
         const data = {
           id: todoID,
           title,
           description
         }
-
-        dispatch({ type: UPDATE_TODO, payload: data });
-        setisDisabled(false);
-        onSave(false);
-      })
-    // .catch(err => alert('Something went wrong:\n' + err));
-  }
-
-  function addTodo() {
-    if (title.length < INPUT_MIN_LENGTH || description.length < INPUT_MIN_LENGTH) {
-      alert('Title and Description lengths must be more than 3 characters!');
-      return;
-    }
-    setisDisabled(true);
-
-    todoPOST(title, description)
-      .then(res => {
-        setisDisabled(false);
-        dispatch({ type: ADD_TODO, payload: res.data });
+        dispatch(updateIsDisabledAction(false));
+        dispatch(updateTodoAction(data));
+        setIsDisabled(false);
+        onSave();
       })
       .catch(err => alert('Something went wrong:\n' + err));
+  }
+
+  const addTodo = () => {
+    if (title.length < INPUT_MIN_LENGTH || description.length < INPUT_MIN_LENGTH) {
+      setIsError(true);
+      return;
+    }
+
+    setIsError(false);
+    setIsDisabled(true);
+
+    postTodo(title, description)
+      .then(res => {
+        setIsDisabled(false);
+        dispatch(addTodoAction(res.data));
+      })
+      .catch(err => {
+        setIsDisabled(false);
+        alert('Something went wrong:\n' + err)
+      });
 
     setTitle('');
     setDescription('');
   }
 
   return (
-    <div style={{ boxShadow: loaderDisplay === 'flex' && 'none' }} className='form' >
-      {loaderDisplay === 'none' ?
-        <>
-          <div className='inputs__block'>
-            <Input
-              label='Title'
-              type='text'
-              max='15'
-              value={title}
-              onChange={(value) => setTitle(value)}
-              disabled={isDisabled}
-            />
-            <Input
-              label='Description'
-              type='text'
-              max='30'
-              value={description}
-              onChange={(value) => setDescription(value)}
-              disabled={isDisabled}
-            />
-          </div>
-          <Button onClick={btnTxt === 'Add' ? addTodo : updateTodo} disabled={isDisabled} >
-            {isDisabled ? <Loader display='flex' isSpinner={true} /> : btnTxt}
-          </Button>
-        </>
-        : <Loader display={loaderDisplay} />
-      }
-    </div>
+    <form className='form' >
+      <div className='inputs__block'>
+        <Input
+          type='text'
+          value={title}
+          isError={isError}
+          disabled={isDisabled}
+          max={INPUT_MAX_LENGTH}
+          min={INPUT_MIN_LENGTH}
+          isEditMode={isEditMode}
+          label={inputsLabels.TODO_TITLE}
+          onChange={(value) => setTitle(value)}
+        />
+
+        <Input
+          type='text'
+          isError={isError}
+          value={description}
+          disabled={isDisabled}
+          max={INPUT_MAX_LENGTH}
+          min={INPUT_MIN_LENGTH}
+          isEditMode={isEditMode}
+          label={inputsLabels.TODO_DESCRIPTION}
+          onChange={(value) => setDescription(value)}
+        />
+      </div>
+
+      <Button
+        onClick={btnTxt === 'Add' ? addTodo : updateTodo}
+        type='submit'
+        disabled={isDisabled}
+      >
+        {
+          isDisabled ?
+            <Loader display='flex' isSpinner={true} /> :
+            btnTxt
+        }
+      </Button>
+    </form>
   );
 }
 

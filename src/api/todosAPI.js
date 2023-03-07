@@ -1,10 +1,10 @@
 import { client } from '.';
 
-export function todosGET() {
+export function getTodos() {
   return client.get('/todos');
 }
 
-export function todoPOST(title, description) {
+export function postTodo(title, description) {
   const todo = {
     title,
     description
@@ -13,15 +13,15 @@ export function todoPOST(title, description) {
   return client.post('/todos', todo);
 }
 
-export function todoDELETE(id) {
+export function deleteTodoById(id) {
   return client.delete(`/todos/${id}`);
 }
 
-export function todoByIdGET(id) {
+export function getTodoById(id) {
   return client.get(`/todos/${id}`);
 }
 
-export function todoPUT(id, title, description) {
+export function putTodoById(id, title, description) {
   const todo = {
     title,
     description
