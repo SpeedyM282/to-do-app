@@ -5,6 +5,8 @@ import UserPage from './pages/UserPage';
 import Admin from './pages/Admin';
 import './App.scss';
 
+// add 404 page path={*}
+
 function App() {
   return (
     <div className="App">

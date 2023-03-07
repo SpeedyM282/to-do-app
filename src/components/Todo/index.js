@@ -41,7 +41,7 @@ const Todo = ({ id, title, description, createdBy }) => {
             onSave={updIsEditMode}
             btnTxt={buttonsTexts.SAVE}
             titleForUpd={res.data.title}
-            descriptionForUpd={res.data.description}
+            descriptionForUpd={res.data.description} // rewrite depending on some state
           />
         );
         setEditClicked(false);
@@ -67,27 +67,26 @@ const Todo = ({ id, title, description, createdBy }) => {
       .catch(err => alert('Something went wrong:\n' + err));
   }
 
-  const buttons = () => {
+  const Buttons = () => {
     if (role === 'user' && createdBy !== 'user') {
       return <h5>{CREATED_BY}</h5>;
-
-    } else {
-      return (
-        <div className='todo__buttons__block' >
-          {
-            editClicked && !isFetched ?
-              <Loader display='flex' isSpinner={true} isDark={true} /> :
-              <EditIcon onClick={updateTodoMode} disabled={deleteClicked || (isDisabled && id !== updateId)} />
-          }
-
-          {
-            deleteClicked ?
-              <Loader display='flex' isSpinner={true} isDark={true} /> :
-              <DeleteIcon onClick={deleteTodo} disabled={editClicked} />
-          }
-        </div>
-      );
     }
+
+    return (
+      <div className='todo__buttons__block' >
+        {
+          editClicked && !isFetched ?
+            <Loader display='flex' isSpinner={true} isDark={true} /> :
+            <EditIcon onClick={updateTodoMode} disabled={deleteClicked || (isDisabled && id !== updateId)} />
+        }
+
+        {
+          deleteClicked ?
+            <Loader display='flex' isSpinner={true} isDark={true} /> :
+            <DeleteIcon onClick={deleteTodo} disabled={editClicked} />
+        }
+      </div>
+    );
   }
 
   return show && isEditMode ? editForm : (
@@ -103,7 +102,7 @@ const Todo = ({ id, title, description, createdBy }) => {
         </p>
       </div>
 
-      {buttons()}
+      <Buttons /> {/**  make as component */}
     </div>
   );
 }

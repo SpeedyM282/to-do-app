@@ -52,7 +52,7 @@ const Form = ({ btnTxt, onSave, titleForUpd, descriptionForUpd }) => {
         setIsDisabled(false);
         onSave();
       })
-      .catch(err => alert('Something went wrong:\n' + err));
+      .catch(err => alert('Something went wrong:\n' + err)); // обработать правильно и вывести тостер
   }
 
   const addTodo = () => {
@@ -68,14 +68,14 @@ const Form = ({ btnTxt, onSave, titleForUpd, descriptionForUpd }) => {
       .then(res => {
         setIsDisabled(false);
         dispatch(addTodoAction(res.data));
+
+        setTitle('');
+        setDescription('');
       })
       .catch(err => {
         setIsDisabled(false);
         alert('Something went wrong:\n' + err)
       });
-
-    setTitle('');
-    setDescription('');
   }
 
   return (

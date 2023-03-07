@@ -9,7 +9,7 @@ import './style.scss';
 
 const TodoList = () => {
   const dispatch = useDispatch();
-  const todos = useSelector(state => state.todosReducer);
+  const todos = useSelector(state => state.todosReducer); // store only data that should be used
 
   const [loaderDisplay, setLoaderDisplay] = useState('flex');
 
