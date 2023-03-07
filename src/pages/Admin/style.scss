@@ -17,16 +17,16 @@
   align-items: center;
 }
 
-.admin__navbar--heading {
+.admin__navbar-heading {
   color: $secondary-color;
 }
 
-.admin__navbar--links__block {
+.admin__navbar-links__block {
   display: flex;
   gap: 30px;
 }
 
-.admin__navbar--link {
+.admin__navbar-link {
   font-size: $large;
 
   background: none;
@@ -45,7 +45,7 @@
   align-items: center;
 }
 
-.admin__navbar--buttons__block {
+.admin__navbar-buttons__block {
   display: flex;
   gap: 20px;
 }

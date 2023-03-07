@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DeleteIcon, EditIcon } from '../../Icons';
-import { buttonsTexts, CREATED_BY } from '../../data';
+import { buttonsTexts, CREATED_BY_ADMIN } from '../../data';
 import { deleteTodoById, getTodoById } from '../../api/todosAPI';
 import { updateIdAction, updateIsDisabledAction } from '../../store/reducers/userReducer';
 import { deleteTodoAction } from '../../store/reducers/todosReducer';
@@ -17,11 +17,11 @@ const Todo = ({ id, title, description, createdBy }) => {
   const updateId = useSelector(state => state.userReducer.id);
 
   const [show, setShow] = useState(true);
+  const [todoData, setTodoData] = useState({});
   const [isFetched, setIsFetched] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editClicked, setEditClicked] = useState(false);
   const [deleteClicked, setDeleteClicked] = useState(false);
-  const [editForm, setEditForm] = useState(<></>);
 
   const updIsEditMode = () => {
     setIsEditMode(false);
@@ -36,15 +36,12 @@ const Todo = ({ id, title, description, createdBy }) => {
       .then(res => {
         dispatch(updateIdAction(id));
 
-        setEditForm(
-          <Form
-            onSave={updIsEditMode}
-            btnTxt={buttonsTexts.SAVE}
-            titleForUpd={res.data.title}
-            descriptionForUpd={res.data.description} // rewrite depending on some state
-          />
-        );
         setEditClicked(false);
+
+        setTodoData({
+          title: res.data.title,
+          description: res.data.description
+        });
 
         setIsFetched(true);
         setIsEditMode(true);
@@ -64,12 +61,12 @@ const Todo = ({ id, title, description, createdBy }) => {
         setDeleteClicked(false);
         dispatch(deleteTodoAction(id));
       })
-      .catch(err => alert('Something went wrong:\n' + err));
+      .catch(err => alert('Something went wrong:\n' + err)); // USE TOASTER
   }
 
-  const Buttons = () => {
+  const TodoButtons = () => {
     if (role === 'user' && createdBy !== 'user') {
-      return <h5>{CREATED_BY}</h5>;
+      return <h5>{CREATED_BY_ADMIN}</h5>;
     }
 
     return (
@@ -89,22 +86,29 @@ const Todo = ({ id, title, description, createdBy }) => {
     );
   }
 
-  return show && isEditMode ? editForm : (
-    <div className='todo__block' >
+  return (
+    show && isEditMode ?
+      <Form
+        onSave={updIsEditMode}
+        btnTxt={buttonsTexts.SAVE}
+        titleForUpd={todoData.title}
+        descriptionForUpd={todoData.description}
+      /> :
+      <div className='todo__block' >
 
-      <div className='todo__text__block' >
-        <h2 className='todo__text--title' >
-          {title}
-        </h2>
+        <div className='todo__text__block' >
+          <h2 className='todo__text-title' >
+            {title}
+          </h2>
 
-        <p className='todo__text--description' >
-          {description}
-        </p>
+          <p className='todo__text-description' >
+            {description}
+          </p>
+        </div>
+
+        <TodoButtons />
       </div>
-
-      <Buttons /> {/**  make as component */}
-    </div>
-  );
+  )
 }
 
 export default Todo;

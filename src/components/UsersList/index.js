@@ -17,7 +17,7 @@ const UsersList = () => {
           return <User key={i} login={e.login} role={e.role} name={e.name} />
         }));
       })
-      .catch(error => alert('Something Bad Happened:\n' + error));
+      .catch(error => alert('Something went wrong:\n' + error)); // USE TOASTER
   }, []);
 
   return (

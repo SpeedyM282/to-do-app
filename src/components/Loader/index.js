@@ -1,22 +1,23 @@
 import './style.scss';
 
-const Loader = ({ display, isSpinner, isDark }) => {
-  const style = {
-    display: display,
+const Loader = ({ isSpinner, isDark }) => {
+  const loaderBlockStyle = {
     width: isSpinner && '24px',
     height: isSpinner && '24px'
   };
 
+  const spanClassName = (
+    isSpinner && isDark ?
+      'loader-spinner loader-dark' :
+      isSpinner ?
+        'loader-spinner' :
+        'loader'
+  );
+
   return (
-    <div style={style} className='loader__block' >
+    <div style={loaderBlockStyle} className='loader__block' >
       <span
-        className={
-          isSpinner && isDark ?
-            'loader-spinner dark-color' :
-            isSpinner ?
-              'loader-spinner' :
-              'loader'
-        }
+        className={spanClassName}
       ></span>
     </div>
   );

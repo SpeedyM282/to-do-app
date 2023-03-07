@@ -11,12 +11,12 @@ const TodoList = () => {
   const dispatch = useDispatch();
   const todos = useSelector(state => state.todosReducer); // store only data that should be used
 
-  const [loaderDisplay, setLoaderDisplay] = useState('flex');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getTodos()
       .then(res => {
-        setLoaderDisplay('none')
+        setIsLoading(false)
         dispatch(assignTodosAction(res.data));
       })
       .catch(err => alert('Something went wrong:\n' + err));
@@ -27,9 +27,12 @@ const TodoList = () => {
     <div className='todolist__block' >
       <Form btnTxt={buttonsTexts.ADD} />
 
-      <div className='todolist__list__block' >
-        <Loader display={loaderDisplay} />
-        {todos}
+      <div className='todolist-list__block' >
+        {
+          isLoading ?
+            <Loader /> :
+            todos
+        }
       </div>
     </div>
   );

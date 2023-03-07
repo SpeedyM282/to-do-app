@@ -7,7 +7,6 @@ import { buttonsTexts, inputsLabels, pagesHeadings } from '../../data';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import './style.scss';
-import Loader from '../../components/Loader';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -37,7 +36,7 @@ const Login = () => {
         setIsDisabled(false);
         setIsError(true);
         setLoaderDisplay('none');
-      });
+      }); // USE TOASTER
   }
 
   return (
@@ -48,32 +47,29 @@ const Login = () => {
         <h1 className='login__heading' >{pagesHeadings.LOGIN_PAGE}</h1>
 
         <Input
-          label={inputsLabels.USERNAME}
           type='text'
           value={username}
-          onChange={(value) => setUsername(value)}
           isError={isError}
+          label={inputsLabels.USERNAME}
+          onChange={(value) => setUsername(value)}
         />
 
         <Input
-          label={inputsLabels.PASSWORD}
           type='password'
           value={password}
-          onChange={(value) => setPassword(value)}
           isError={isError}
+          label={inputsLabels.PASSWORD}
+          onChange={(value) => setPassword(value)}
         />
       </div>
 
       <Button
-        onClick={handleClick}
         type='submit'
+        onClick={handleClick}
         disabled={isDisabled}
+        loaderDisplay={loaderDisplay}
       >
-        {
-          loaderDisplay === 'none' ?
-            buttonsTexts.LOGIN :
-            <Loader display={loaderDisplay} isSpinner={true} />
-        }
+        {buttonsTexts.LOGIN}
       </Button>
     </form>
   );

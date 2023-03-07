@@ -7,8 +7,8 @@ const Checkbox = ({ label, onClick }) => {
       <div className='form__checkbox__wrapper' >
         {label}:
         <input
-          className='form__checkbox'
           type="checkbox"
+          className='form__checkbox'
           onClick={onClick}
         />
       </div>

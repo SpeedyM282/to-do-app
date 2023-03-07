@@ -4,7 +4,6 @@ import { getMe, postLogout } from '../../api';
 import { pagesHeadings, buttonsTexts } from '../../data';
 import { updateRoleAction } from '../../store/reducers/userReducer';
 import Button from '../../components/Button';
-import Loader from '../../components/Loader';
 import TodoList from '../../components/TodoList';
 import './style.scss';
 
@@ -25,7 +24,7 @@ const UserPage = () => {
         }
       })
       .catch(() => {
-        alert('You are not logged in!');
+        alert('You are not logged in!'); // USE TOASTER
         window.location.href = '/to-do-app/';
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,15 +45,11 @@ const UserPage = () => {
 
   return (
     <div className='user__page__block' >
-      <div className='user__page__header' >
-        <h1 className='user__page__heading' >{pagesHeadings.USER_PAGE}</h1>
+      <div className='user__page-header' >
+        <h1 className='user__page-heading' >{pagesHeadings.USER_PAGE}</h1>
 
-        <Button onClick={logout} disabled={isDisabled} >
-          {
-            loaderDisplay === 'none' ?
-              buttonsTexts.LOGOUT :
-              <Loader display={loaderDisplay} isSpinner={true} />
-          }
+        <Button onClick={logout} disabled={isDisabled} loaderDisplay={loaderDisplay} >
+          {buttonsTexts.LOGOUT}
         </Button>
       </div>
 

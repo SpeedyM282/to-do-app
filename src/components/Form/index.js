@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { inputsLabels } from '../../data';
+import { buttonsTexts, inputsLabels } from '../../data';
 import { postTodo, putTodoById } from '../../api/todosAPI';
 import { updateIsDisabledAction } from '../../store/reducers/userReducer';
 import { addTodoAction, updateTodoAction } from '../../store/reducers/todosReducer';
 import Input from '../Input';
 import Button from '../Button';
-import Loader from '../Loader';
 import './style.scss';
 
 const Form = ({ btnTxt, onSave, titleForUpd, descriptionForUpd }) => {
@@ -18,7 +17,7 @@ const Form = ({ btnTxt, onSave, titleForUpd, descriptionForUpd }) => {
   const [description, setDescription] = useState('');
   const [isDisabled, setIsDisabled] = useState(false);
 
-  const isEditMode = (btnTxt === 'Save');
+  const isEditMode = (btnTxt === buttonsTexts.SAVE);
 
   const INPUT_MIN_LENGTH = 3;
   const INPUT_MAX_LENGTH = 30;
@@ -89,7 +88,7 @@ const Form = ({ btnTxt, onSave, titleForUpd, descriptionForUpd }) => {
           max={INPUT_MAX_LENGTH}
           min={INPUT_MIN_LENGTH}
           isEditMode={isEditMode}
-          label={inputsLabels.TODO_TITLE}
+          label={inputsLabels.TITLE}
           onChange={(value) => setTitle(value)}
         />
 
@@ -101,21 +100,18 @@ const Form = ({ btnTxt, onSave, titleForUpd, descriptionForUpd }) => {
           max={INPUT_MAX_LENGTH}
           min={INPUT_MIN_LENGTH}
           isEditMode={isEditMode}
-          label={inputsLabels.TODO_DESCRIPTION}
+          label={inputsLabels.DESCRIPTION}
           onChange={(value) => setDescription(value)}
         />
       </div>
 
       <Button
-        onClick={btnTxt === 'Add' ? addTodo : updateTodo}
         type='submit'
         disabled={isDisabled}
+        loaderDisplay={isDisabled ? 'flex' : 'none'}
+        onClick={btnTxt === buttonsTexts.ADD ? addTodo : updateTodo}
       >
-        {
-          isDisabled ?
-            <Loader display='flex' isSpinner={true} /> :
-            btnTxt
-        }
+        {btnTxt}
       </Button>
     </form>
   );

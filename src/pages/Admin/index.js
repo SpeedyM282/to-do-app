@@ -7,7 +7,6 @@ import Button from '../../components/Button';
 import TodoList from '../../components/TodoList';
 import UsersList from '../../components/UsersList';
 import './style.scss';
-import Loader from '../../components/Loader';
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -15,13 +14,12 @@ const Admin = () => {
   const [showTodos, setShowTodos] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [loaderDisplay, setLoaderDisplay] = useState('none');
 
-  const todoStyle = {
+  const todosListLinkStyle = {
     fontWeight: showTodos ? 'bold' : 'normal'
   };
 
-  const userStyle = {
+  const usersListLinkStyle = {
     fontWeight: showUsers ? 'bold' : 'normal'
   };
 
@@ -37,7 +35,7 @@ const Admin = () => {
       })
       .catch(() => {
         alert('You are not logged in!');
-        window.location.href = '/to-do-app/';
+        window.location.href = '/to-do-app/'; // USE TOASTER
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -71,48 +69,42 @@ const Admin = () => {
   }
 
   const logout = () => {
-    setLoaderDisplay('flex');
     setIsDisabled(true);
 
     postLogout()
       .then(() => {
         setIsDisabled(false);
-        setLoaderDisplay('none');
         window.location.href = '/to-do-app/';
       })
-      .catch(err => alert('Something went wrong:\n' + err));
+      .catch(err => alert('Something went wrong:\n' + err)); // USE TOASTER
   }
 
   return (
     <div className='admin__block' >
       <nav className='admin__navbar' >
-        <h1 className='admin__navbar--heading' >{pagesHeadings.ADMIN_PAGE}</h1>
+        <h1 className='admin__navbar-heading' >{pagesHeadings.ADMIN_PAGE}</h1>
 
-        <div className='admin__navbar--links__block' >
+        <div className='admin__navbar-links__block' >
           <button
-            style={todoStyle}
-            className='admin__navbar--link'
             onClick={showTodoList}
+            style={todosListLinkStyle}
+            className='admin__navbar-link'
           >
             {adminPageLinks.TODOS_LIST}
           </button>
 
           <button
-            style={userStyle}
-            className='admin__navbar--link'
             onClick={showUsersList}
+            style={usersListLinkStyle}
+            className='admin__navbar-link'
           >
             {adminPageLinks.USERS_LIST}
           </button>
         </div>
 
-        <div className='admin__navbar--buttons__block' >
+        <div className='admin__navbar-buttons__block' >
           <Button onClick={logout} disabled={isDisabled} >
-            {
-              loaderDisplay === 'none' ?
-                buttonsTexts.LOGOUT :
-                <Loader display={loaderDisplay} isSpinner={true} />
-            }
+            {buttonsTexts.LOGOUT}
           </Button>
         </div>
       </nav>

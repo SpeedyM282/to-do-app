@@ -15,9 +15,9 @@
   border: none;
   border-radius: $border-radius-small;
   cursor: pointer;
-}
 
-.button:active {
-  box-shadow: inset 5px 5px 10px -3px $box-shadow;
-  transform: translateY(3px);
+  &:active {
+    box-shadow: inset 5px 5px 10px -3px $box-shadow;
+    transform: translateY(3px);
+  }
 }
