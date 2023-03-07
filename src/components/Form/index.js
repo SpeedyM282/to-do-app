@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { inputsLabels } from '../../data';
 import { postTodo, putTodoById } from '../../api/todosAPI';
+import { updateIsDisabledAction } from '../../store/reducers/userReducer';
 import { addTodoAction, updateTodoAction } from '../../store/reducers/todosReducer';
 import Input from '../Input';
 import Button from '../Button';
@@ -46,7 +47,7 @@ const Form = ({ btnTxt, onSave, titleForUpd, descriptionForUpd }) => {
           title,
           description
         }
-
+        dispatch(updateIsDisabledAction(false));
         dispatch(updateTodoAction(data));
         setIsDisabled(false);
         onSave();

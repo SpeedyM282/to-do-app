@@ -16,6 +16,7 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isError, setIsError] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [loaderDisplay, setLoaderDisplay] = useState('none');
 
   const handleClick = () => {
@@ -24,13 +25,16 @@ const Login = () => {
       return;
     }
     setLoaderDisplay('flex');
+    setIsDisabled(true);
 
     postLogin(username, password)
       .then(res => {
+        setIsDisabled(false);
         setLoaderDisplay('none');
         dispatch(updateRoleAction(res.data.role));
       })
       .catch(() => {
+        setIsDisabled(false);
         setIsError(true);
         setLoaderDisplay('none');
       });
@@ -63,6 +67,7 @@ const Login = () => {
       <Button
         onClick={handleClick}
         type='submit'
+        disabled={isDisabled}
       >
         {
           loaderDisplay === 'none' ?

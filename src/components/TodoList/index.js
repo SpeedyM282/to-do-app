@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTodos } from '../../api/todosAPI';
 import { buttonsTexts } from '../../data';
+import { getTodos } from '../../api/todosAPI';
 import { assignTodosAction } from '../../store/reducers/todosReducer';
 import Form from '../Form';
 import Loader from '../Loader';

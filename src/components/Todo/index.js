@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DeleteIcon, EditIcon } from '../../Icons';
 import { buttonsTexts, CREATED_BY } from '../../data';
 import { deleteTodoById, getTodoById } from '../../api/todosAPI';
-import { updateIdAction } from '../../store/reducers/userReducer';
+import { updateIdAction, updateIsDisabledAction } from '../../store/reducers/userReducer';
 import { deleteTodoAction } from '../../store/reducers/todosReducer';
 import Form from '../Form';
 import Loader from '../Loader';
@@ -11,7 +11,10 @@ import './style.scss';
 
 const Todo = ({ id, title, description, createdBy }) => {
   const dispatch = useDispatch();
+
   const role = useSelector(state => state.userReducer.role);
+  const isDisabled = useSelector(state => state.userReducer.isDisabled);
+  const updateId = useSelector(state => state.userReducer.id);
 
   const [show, setShow] = useState(true);
   const [isFetched, setIsFetched] = useState(false);
@@ -26,6 +29,8 @@ const Todo = ({ id, title, description, createdBy }) => {
 
   const updateTodoMode = () => {
     setEditClicked(true);
+    setIsFetched(false);
+    dispatch(updateIsDisabledAction(true));
 
     getTodoById(id)
       .then(res => {
@@ -44,7 +49,10 @@ const Todo = ({ id, title, description, createdBy }) => {
         setIsFetched(true);
         setIsEditMode(true);
       })
-      .catch(err => alert('Something went wrong:\n' + err));
+      .catch(err => {
+        dispatch(updateIsDisabledAction(false));
+        alert('Something went wrong:\n' + err);
+      });
   }
 
   const deleteTodo = () => {
@@ -69,7 +77,7 @@ const Todo = ({ id, title, description, createdBy }) => {
           {
             editClicked && !isFetched ?
               <Loader display='flex' isSpinner={true} isDark={true} /> :
-              <EditIcon onClick={updateTodoMode} disabled={deleteClicked} />
+              <EditIcon onClick={updateTodoMode} disabled={deleteClicked || (isDisabled && id !== updateId)} />
           }
 
           {

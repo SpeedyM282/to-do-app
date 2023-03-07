@@ -6,7 +6,7 @@ import './style.scss';
 const Input = ({ label, type, value, onChange, max, min, disabled, isError, isEditMode }) => {
   const [inputType, setInputType] = useState(type);
 
-  const ERROR_MESSAGE = 'Input must be more than 3 chars';
+  const ERROR_MESSAGE = 'Input must be more than 2 chars';
   const LOGIN_ERROR_MESSAGE = 'Please check credentials';
 
   const toggleType = () => {
