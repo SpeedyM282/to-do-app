@@ -42,5 +42,10 @@ export const buttonColors = {
   SECONDARY_COLOR: '#595f64'
 }
 
+export const adminPageText = {
+  HEADING: 'Hi you are in Admin page.',
+  DESCRIPTION: 'You can navigate to Todos List or Users List by clicking link in the top'
+}
+
 export const CREATED_BY_ADMIN = 'Created By Admin';
 export const CHECKBOX_LABEL = 'Show Password';

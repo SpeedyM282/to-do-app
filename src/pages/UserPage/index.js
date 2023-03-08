@@ -21,12 +21,12 @@ const UserPage = () => {
           dispatch(updateRoleAction(res.data.role));
         } else {
           toast.error("You are not logged in as User!");
-          setTimeout(() => { window.location.href = '/to-do-app/' }, 3000);
+          setTimeout(() => { window.location.href = '/to-do-app/' }, 1000);
         }
       })
       .catch(() => {
         toast.error("You are not logged in!");
-        setTimeout(() => { window.location.href = '/to-do-app/' }, 3000);
+        setTimeout(() => { window.location.href = '/to-do-app/' }, 1000);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

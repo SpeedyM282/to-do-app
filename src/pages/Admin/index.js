@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
 import { getMe, postLogout } from '../../api';
-import { pagesHeadings, buttonsTexts, adminPageLinks } from '../../data';
+import { pagesHeadings, buttonsTexts, adminPageLinks, adminPageText } from '../../data';
 import { updateRoleAction } from '../../store/reducers/userReducer';
 import Button from '../../components/Button';
 import TodoList from '../../components/TodoList';
@@ -31,12 +31,12 @@ const Admin = () => {
           dispatch(updateRoleAction(res.data.role));
         } else {
           toast.error("You are not logged in as Admin!");
-          setTimeout(() => { window.location.href = '/to-do-app/' }, 3000);
+          setTimeout(() => { window.location.href = '/to-do-app/' }, 1000);
         }
       })
       .catch(() => {
         toast.error("You are not logged in!");
-        setTimeout(() => { window.location.href = '/to-do-app/' }, 3000);
+        setTimeout(() => { window.location.href = '/to-do-app/' }, 1000);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -117,6 +117,14 @@ const Admin = () => {
       </nav>
 
       <main className='admin__main' >
+        {
+          !(showTodos || showUsers) &&
+          <div className='admin__main-text__block' >
+            <h3>{adminPageText.HEADING}</h3>
+            <p>{adminPageText.DESCRIPTION}</p>
+          </div>
+        }
+
         {showTodos && <TodoList />}
 
         {showUsers && <UsersList />}

@@ -8,18 +8,18 @@ import './style.scss';
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
-  const [loaderDisplay, setLoaderDisplay] = useState('flex');
+  const [loaderDisplay, setLoaderDisplay] = useState(true);
 
   useEffect(() => {
     getUsers()
       .then(res => {
-        setLoaderDisplay('none');
+        setLoaderDisplay(false);
         setUsers(res.data.map((e, i) => {
           return <User key={i} login={e.login} role={e.role} name={e.name} />
         }));
       })
       .catch(() => {
-        setLoaderDisplay('none');
+        setLoaderDisplay(false);
         toast.error("Something went wrong\n Refresh the page or try later.");
       });
   }, []);
@@ -44,7 +44,7 @@ const UsersList = () => {
       </div>
 
       <div className='userslist' >
-        <Loader display={loaderDisplay} />
+        {loaderDisplay && <Loader />}
         {users}
       </div>
     </div>
