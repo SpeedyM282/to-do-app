@@ -44,7 +44,7 @@ const Admin = () => {
   useEffect(() => {
     const listToggle = JSON.parse(localStorage.getItem('listsToggle'));
 
-    if (window.location.pathname === '/to-do-app/admin/todo-list') {
+    if (window.location.pathname === '/to-do-app/admin/todos-list') {
       setShowUsers(false);
       setShowTodos(true);
     } else if (window.location.pathname === '/to-do-app/admin/users-list') {
@@ -60,7 +60,7 @@ const Admin = () => {
   const showTodoList = () => {
     localStorage.setItem('listsToggle', JSON.stringify({ showTodos, showUsers }));
 
-    window.location.href = '/to-do-app/admin/todo-list';
+    window.location.href = '/to-do-app/admin/todos-list';
   }
 
   const showUsersList = () => {

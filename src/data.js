@@ -43,8 +43,8 @@ export const buttonColors = {
 }
 
 export const adminPageText = {
-  HEADING: 'Hi you are in Admin page.',
-  DESCRIPTION: 'You can navigate to Todos List or Users List by clicking link in the top'
+  HEADING: 'Hi, you are in Admin page.',
+  DESCRIPTION: 'You can navigate to Todos List or Users List by clicking links in the top'
 }
 
 export const CREATED_BY_ADMIN = 'Created By Admin';
