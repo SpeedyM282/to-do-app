@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { buttonsTexts } from '../../data';
 import { getTodos } from '../../api/todosAPI';
@@ -16,15 +17,21 @@ const TodoList = () => {
   useEffect(() => {
     getTodos()
       .then(res => {
-        setIsLoading(false)
+        setIsLoading(false);
         dispatch(assignTodosAction(res.data));
       })
-      .catch(err => alert('Something went wrong:\n' + err));
+      .catch(() => {
+        setIsLoading(false);
+        toast.error("Something went wrong\n Refresh the page or try later.");
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className='todolist__block' >
+
+      <Toaster position="top-left" />
+
       <Form btnTxt={buttonsTexts.ADD} />
 
       <div className='todolist-list__block' >

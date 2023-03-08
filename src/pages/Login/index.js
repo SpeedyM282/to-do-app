@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRoleAction } from '../../store/reducers/userReducer';
 import { postLogin } from '../../api';
@@ -36,11 +37,15 @@ const Login = () => {
         setIsDisabled(false);
         setIsError(true);
         setLoaderDisplay('none');
-      }); // USE TOASTER
+        toast.error("That didn't work\n Please try again!");
+      });
   }
 
   return (
     <form className='login'>
+
+      <Toaster position="top-left" />
+
       {role && <Navigate to={`/to-do-app/${role}`} />}
 
       <div className='login__inputs__block' >

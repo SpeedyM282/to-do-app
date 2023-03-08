@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
+import { ConfirmPrompt } from './ConfirmPrompt';
 import { DeleteIcon, EditIcon } from '../../Icons';
 import { buttonsTexts, CREATED_BY_ADMIN } from '../../data';
 import { deleteTodoById, getTodoById } from '../../api/todosAPI';
@@ -27,6 +29,16 @@ const Todo = ({ id, title, description, createdBy }) => {
     setIsEditMode(false);
   }
 
+  const updDeleteClicked = () => {
+    dispatch(updateIsDisabledAction(false));
+    setDeleteClicked(false);
+  }
+
+  const onDeleteIconClick = () => {
+    dispatch(updateIsDisabledAction(true));
+    setDeleteClicked(true)
+  }
+
   const updateTodoMode = () => {
     setEditClicked(true);
     setIsFetched(false);
@@ -46,22 +58,30 @@ const Todo = ({ id, title, description, createdBy }) => {
         setIsFetched(true);
         setIsEditMode(true);
       })
-      .catch(err => {
+      .catch(() => {
+        setEditClicked(false);
         dispatch(updateIsDisabledAction(false));
-        alert('Something went wrong:\n' + err);
+        toast.error("That didn't work.\n Please try again!");
       });
   }
 
   const deleteTodo = () => {
     setDeleteClicked(true);
     setShow(false);
+    dispatch(updateIsDisabledAction(true));
 
     deleteTodoById(id)
       .then(() => {
         setDeleteClicked(false);
+
         dispatch(deleteTodoAction(id));
+        dispatch(updateIsDisabledAction(false));
       })
-      .catch(err => alert('Something went wrong:\n' + err)); // USE TOASTER
+      .catch(err => {
+        setDeleteClicked(false);
+        dispatch(updateIsDisabledAction(false));
+        toast.error("This didn't work. Try again!");
+      });
   }
 
   const TodoButtons = () => {
@@ -80,7 +100,7 @@ const Todo = ({ id, title, description, createdBy }) => {
         {
           deleteClicked ?
             <Loader display='flex' isSpinner={true} isDark={true} /> :
-            <DeleteIcon onClick={deleteTodo} disabled={editClicked} />
+            <DeleteIcon onClick={onDeleteIconClick} disabled={editClicked || (isDisabled && id !== updateId)} />
         }
       </div>
     );
@@ -94,7 +114,13 @@ const Todo = ({ id, title, description, createdBy }) => {
         titleForUpd={todoData.title}
         descriptionForUpd={todoData.description}
       /> :
+
       <div className='todo__block' >
+        {
+          deleteClicked && <ConfirmPrompt deleteTodo={deleteTodo} updDeleteClicked={updDeleteClicked} />
+        }
+
+        <Toaster position="top-left" />
 
         <div className='todo__text__block' >
           <h2 className='todo__text-title' >

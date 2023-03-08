@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { getUsers } from '../../api';
 import { usersListHeadings } from '../../data';
 import Loader from '../Loader';
@@ -17,11 +18,17 @@ const UsersList = () => {
           return <User key={i} login={e.login} role={e.role} name={e.name} />
         }));
       })
-      .catch(error => alert('Something went wrong:\n' + error)); // USE TOASTER
+      .catch(() => {
+        setLoaderDisplay('none');
+        toast.error("Something went wrong\n Refresh the page or try later.");
+      });
   }, []);
 
   return (
     <div className='userslist__block' >
+
+      <Toaster position="top-left" />
+
       <div className='userlist__headings--block' >
         <p className='userlist__headings' >
           {usersListHeadings.LOGIN_USERNAME}:

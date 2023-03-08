@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { buttonsTexts, inputsLabels } from '../../data';
 import { postTodo, putTodoById } from '../../api/todosAPI';
@@ -51,7 +52,12 @@ const Form = ({ btnTxt, onSave, titleForUpd, descriptionForUpd }) => {
         setIsDisabled(false);
         onSave();
       })
-      .catch(err => alert('Something went wrong:\n' + err)); // обработать правильно и вывести тостер
+      .catch(() => {
+        toast.error("That didn't work.\n Please try again!");
+        dispatch(updateIsDisabledAction(false));
+        setIsDisabled(false);
+        onSave();
+      });
   }
 
   const addTodo = () => {
@@ -71,14 +77,17 @@ const Form = ({ btnTxt, onSave, titleForUpd, descriptionForUpd }) => {
         setTitle('');
         setDescription('');
       })
-      .catch(err => {
+      .catch(() => {
         setIsDisabled(false);
-        alert('Something went wrong:\n' + err)
+        toast.error("That didn't work.\n Please try again!");
       });
   }
 
   return (
     <form className='form' >
+
+      <Toaster position="top-left" />
+
       <div className='inputs__block'>
         <Input
           type='text'

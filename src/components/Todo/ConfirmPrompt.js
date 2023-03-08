@@ -1,29 +1,39 @@
 import React, { useState } from "react";
 
-export const ConfirmPrompt = ({ deleteTodo }) => {
+export const ConfirmPrompt = ({ deleteTodo, updDeleteClicked }) => {
   const [show, setShow] = useState(true);
+
+  const handleClickYes = () => {
+    deleteTodo();
+    setShow(false);
+  }
+
+  const handleClickNo = () => {
+    updDeleteClicked();
+    setShow(false);
+  }
 
   return (
     show ?
-      <span className='toast' >
+      <div className='prompt' >
         Do you want to delete it?
 
-        <div className='toast-buttons__block' >
+        <div className='prompt-buttons__block' >
           <button
-            className='toast-button yes'
-            onClick={() => {
-              deleteTodo();
-              setShow(false);
-            }}
+            onClick={handleClickYes}
+            className='prompt-button yes'
           >
             Yes
           </button>
 
-          <button className='toast-button no' onClick={() => setShow(false)}>
+          <button
+            onClick={handleClickNo}
+            className='prompt-button no'
+          >
             No
           </button>
         </div>
-      </span>
+      </div>
       : <></>
   );
 };

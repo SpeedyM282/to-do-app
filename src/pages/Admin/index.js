@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import toast, { Toaster } from 'react-hot-toast';
 import { getMe, postLogout } from '../../api';
 import { pagesHeadings, buttonsTexts, adminPageLinks } from '../../data';
 import { updateRoleAction } from '../../store/reducers/userReducer';
@@ -29,13 +30,13 @@ const Admin = () => {
         if (res.data.role === 'admin') {
           dispatch(updateRoleAction(res.data.role));
         } else {
-          alert('You are not logged in as Admin!');
-          window.location.href = '/to-do-app/'
+          toast.error("You are not logged in as Admin!");
+          setTimeout(() => { window.location.href = '/to-do-app/' }, 3000);
         }
       })
       .catch(() => {
-        alert('You are not logged in!');
-        window.location.href = '/to-do-app/'; // USE TOASTER
+        toast.error("You are not logged in!");
+        setTimeout(() => { window.location.href = '/to-do-app/' }, 3000);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -76,11 +77,17 @@ const Admin = () => {
         setIsDisabled(false);
         window.location.href = '/to-do-app/';
       })
-      .catch(err => alert('Something went wrong:\n' + err)); // USE TOASTER
+      .catch(() => {
+        setIsDisabled(false);
+        toast.error("Something went wrong\n Refresh the page or try later.");
+      });
   }
 
   return (
     <div className='admin__block' >
+
+      <Toaster position="top-left" />
+
       <nav className='admin__navbar' >
         <h1 className='admin__navbar-heading' >{pagesHeadings.ADMIN_PAGE}</h1>
 
