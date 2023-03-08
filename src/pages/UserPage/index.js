@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import toast, { Toaster } from 'react-hot-toast';
 import { getMe, postLogout } from '../../api';
 import { pagesHeadings, buttonsTexts } from '../../data';
 import { updateRoleAction } from '../../store/reducers/userReducer';
 import Button from '../../components/Button';
-import Loader from '../../components/Loader';
 import TodoList from '../../components/TodoList';
 import './style.scss';
 
@@ -20,13 +20,13 @@ const UserPage = () => {
         if (res.data.role === 'user') {
           dispatch(updateRoleAction(res.data.role));
         } else {
-          alert('You are not logged in as User!');
-          window.location.href = '/to-do-app/';
+          toast.error("You are not logged in as User!");
+          setTimeout(() => { window.location.href = '/to-do-app/' }, 1000);
         }
       })
       .catch(() => {
-        alert('You are not logged in!');
-        window.location.href = '/to-do-app/';
+        toast.error("You are not logged in!");
+        setTimeout(() => { window.location.href = '/to-do-app/' }, 1000);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -41,20 +41,23 @@ const UserPage = () => {
         setLoaderDisplay('none');
         window.location.href = '/to-do-app/';
       })
-      .catch(err => alert('Something went wrong:\n' + err));
+      .catch(() => {
+        setIsDisabled(false);
+        setLoaderDisplay('none');
+        toast.error("That didn't work\n Please try again!");
+      });
   }
 
   return (
     <div className='user__page__block' >
-      <div className='user__page__header' >
-        <h1 className='user__page__heading' >{pagesHeadings.USER_PAGE}</h1>
 
-        <Button onClick={logout} disabled={isDisabled} >
-          {
-            loaderDisplay === 'none' ?
-              buttonsTexts.LOGOUT :
-              <Loader display={loaderDisplay} isSpinner={true} />
-          }
+      <Toaster position="top-left" />
+
+      <div className='user__page-header' >
+        <h1 className='user__page-heading' >{pagesHeadings.USER_PAGE}</h1>
+
+        <Button onClick={logout} disabled={isDisabled} loaderDisplay={loaderDisplay} >
+          {buttonsTexts.LOGOUT}
         </Button>
       </div>
 

@@ -1,4 +1,4 @@
-import { todoGenerator, todoDeleter, todoUpdater, todosAssigner } from '../../utils';
+import { todoUpdater } from '../../utils';
 
 const ASSIGN_TODOS = 'ASSIGN_TODOS';
 const UPDATE_TODO = 'UPDATE_TODO';
@@ -13,13 +13,13 @@ export function todosReducer(state = defaultState, action) {
 
   switch (action.type) {
     case ASSIGN_TODOS:
-      return [...state, ...todosAssigner(data)];
+      return [...state, ...action.payload];
 
     case ADD_TODO:
-      return [...state, todoGenerator(data.id, data.title, data.description, data.createdBy)];
+      return [...state, action.payload];
 
     case DELETE_TODO:
-      return todoDeleter(state, action.payload);
+      return state.filter(e => e.id !== action.payload);
 
     case UPDATE_TODO:
       return todoUpdater(state, data.id, data.title, data.description);

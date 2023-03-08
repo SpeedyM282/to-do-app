@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRoleAction } from '../../store/reducers/userReducer';
 import { postLogin } from '../../api';
@@ -7,7 +8,6 @@ import { buttonsTexts, inputsLabels, pagesHeadings } from '../../data';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import './style.scss';
-import Loader from '../../components/Loader';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -37,43 +37,44 @@ const Login = () => {
         setIsDisabled(false);
         setIsError(true);
         setLoaderDisplay('none');
+        toast.error("That didn't work\n Please try again!");
       });
   }
 
   return (
     <form className='login'>
+
+      <Toaster position="top-left" />
+
       {role && <Navigate to={`/to-do-app/${role}`} />}
 
       <div className='login__inputs__block' >
         <h1 className='login__heading' >{pagesHeadings.LOGIN_PAGE}</h1>
 
         <Input
-          label={inputsLabels.USERNAME}
           type='text'
           value={username}
-          onChange={(value) => setUsername(value)}
           isError={isError}
+          label={inputsLabels.USERNAME}
+          onChange={(value) => setUsername(value)}
         />
 
         <Input
-          label={inputsLabels.PASSWORD}
           type='password'
           value={password}
-          onChange={(value) => setPassword(value)}
           isError={isError}
+          label={inputsLabels.PASSWORD}
+          onChange={(value) => setPassword(value)}
         />
       </div>
 
       <Button
-        onClick={handleClick}
         type='submit'
+        onClick={handleClick}
         disabled={isDisabled}
+        loaderDisplay={loaderDisplay}
       >
-        {
-          loaderDisplay === 'none' ?
-            buttonsTexts.LOGIN :
-            <Loader display={loaderDisplay} isSpinner={true} />
-        }
+        {buttonsTexts.LOGIN}
       </Button>
     </form>
   );

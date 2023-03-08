@@ -1,22 +1,23 @@
 import React from 'react';
+import { buttonsTexts, buttonColors } from '../../data';
+import Loader from '../Loader';
 import './style.scss';
 
 const Button = ({ children, onClick, disabled, type }) => {
-  const DANGER_COLOR = '#EB2E2E';
-  const WARNING_COLOR = '#ffcc00';
-  const SUCCESS_COLOR = '#339900';
-  const PRIMARY_COLOR = '#007bff';
-  const SECONDARY_COLOR = '#595f64';
-
   const style = {
     cursor: disabled && 'not-allowed',
     backgroundColor:
-      children === 'Save' ? WARNING_COLOR :
-        disabled ? SECONDARY_COLOR :
-          children === 'Logout' ? DANGER_COLOR :
-            children === 'Add' ? SUCCESS_COLOR :
-              PRIMARY_COLOR
+      disabled ? buttonColors.SECONDARY_COLOR :
+        children === buttonsTexts.SAVE ? buttonColors.WARNING_COLOR :
+          children === buttonsTexts.LOGOUT ? buttonColors.DANGER_COLOR :
+            children === buttonsTexts.ADD ? buttonColors.SUCCESS_COLOR :
+              buttonColors.PRIMARY_COLOR
   };
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    onClick();
+  }
 
   return (
     <>
@@ -24,13 +25,14 @@ const Button = ({ children, onClick, disabled, type }) => {
         className='button'
         type={type}
         style={style}
-        onClick={(event) => {
-          event.preventDefault();
-          onClick();
-        }}
         disabled={disabled}
+        onClick={(event) => handleClick(event)}
       >
-        {children}
+        {
+          disabled ?
+            <Loader isSpinner={true} /> :
+            children
+        }
       </button>
     </>
   )

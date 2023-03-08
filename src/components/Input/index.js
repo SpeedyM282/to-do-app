@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { CHECKBOX_LABEL } from '../../data';
+import { CHECKBOX_LABEL, errorMessages, inputsLabels } from '../../data';
 import Checkbox from '../Checkbox';
 import './style.scss';
 
 const Input = ({ label, type, value, onChange, max, min, disabled, isError, isEditMode }) => {
   const [inputType, setInputType] = useState(type);
-
-  const ERROR_MESSAGE = 'Input must be more than 2 chars';
-  const LOGIN_ERROR_MESSAGE = 'Please check credentials';
 
   const toggleType = () => {
     if (inputType === 'password') {
@@ -17,30 +14,31 @@ const Input = ({ label, type, value, onChange, max, min, disabled, isError, isEd
     }
   }
 
+  const labelClassName = `form__label ${isEditMode && 'edit--mode'}`;
+  const inputClassName = `form__input ${isError && ' input--error'} ${isEditMode && 'edit--mode--input'}`;
+
   return (
     <>
-      <label className={`form__label ${isEditMode && 'edit--mode'}`} >
+      <label className={labelClassName} >
         {label}:
         <input
           required
           value={value}
           maxLength={max}
           minLength={min}
+          className={inputClassName}
           autoComplete="new-password"
           disabled={disabled ? 'disabled' : ''}
           onChange={(e) => onChange(e.target.value)}
           type={type === 'password' ? inputType : type}
-          className={
-            `form__input ${isError && ' input--error'} ${isEditMode && 'edit--mode--input'}`
-          }
         />
         {
           isError &&
-          <p className='error--message' >
+          <p className='error-message' >
             {
-              label === 'Title' || label === 'Description' ?
-                ERROR_MESSAGE :
-                LOGIN_ERROR_MESSAGE
+              label === inputsLabels.TITLE || label === inputsLabels.DESCRIPTION ?
+                errorMessages.ERROR_MESSAGE :
+                errorMessages.LOGIN_ERROR_MESSAGE
             }
           </p>
         }

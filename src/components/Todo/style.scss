@@ -19,8 +19,8 @@
   gap: 5px;
 }
 
-.todo__text--title,
-.todo__text--description {
+.todo__text-title,
+.todo__text-description {
   margin: 0;
 }
 
@@ -29,4 +29,52 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 25px;
+}
+
+// PROMPT STYLES
+
+.prompt {
+  padding: 10px;
+  background: #fff;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+
+  position: fixed;
+  left: 50%;
+  top: 1%;
+
+  border-radius: $border-radius-medium;
+  box-shadow: 3px 3px 7px $secondary-color;
+}
+
+.prompt-buttons__block {
+  display: flex;
+  gap: 10px;
+}
+
+.prompt-button {
+  width: 50px;
+  height: 25px;
+
+  color: #fff;
+  border: none;
+  border-radius: $border-radius-small;
+  cursor: pointer;
+
+
+  &:active {
+    box-shadow: inset 5px 5px 10px -3px $box-shadow;
+    transform: translateY(3px);
+  }
+}
+
+.yes {
+  background-color: $danger-color;
+}
+
+.no {
+  background-color: $success-color;
 }
