@@ -31,12 +31,12 @@ const Admin = () => {
           dispatch(updateRoleAction(res.data.role));
         } else {
           toast.error("You are not logged in as Admin!");
-          setTimeout(() => { window.location.href = '/to-do-app/' }, 1000);
+          setTimeout(() => { window.location.href = '/to-do-app' }, 1000);
         }
       })
       .catch(() => {
         toast.error("You are not logged in!");
-        setTimeout(() => { window.location.href = '/to-do-app/' }, 1000);
+        setTimeout(() => { window.location.href = '/to-do-app' }, 1000);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -75,7 +75,7 @@ const Admin = () => {
     postLogout()
       .then(() => {
         setIsDisabled(false);
-        window.location.href = '/to-do-app/';
+        window.location.href = '/to-do-app';
       })
       .catch(() => {
         setIsDisabled(false);

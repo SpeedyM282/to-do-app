@@ -49,6 +49,7 @@ const Form = ({ btnTxt, onSave, titleForUpd, descriptionForUpd }) => {
         }
         dispatch(updateIsDisabledAction(false));
         dispatch(updateTodoAction(data));
+
         setIsDisabled(false);
         onSave();
       })

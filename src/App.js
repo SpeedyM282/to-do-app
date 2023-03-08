@@ -11,11 +11,11 @@ function App() {
     <div className="App" >
       <Routes>
         <Route exact path='/*' element={<ErrorPage />} />
-        <Route exact path='/to-do-app/' element={<Login />} />
-        <Route path='/to-do-app/user/' element={<UserPage />} />
-        <Route path='/to-do-app/admin/' element={<Admin />} />
-        <Route path='/to-do-app/admin/todos-list/' element={<Admin />} />
-        <Route path='/to-do-app/admin/users-list/' element={<Admin />} />
+        <Route exact path='/to-do-app' element={<Login />} />
+        <Route path='/to-do-app/user' element={<UserPage />} />
+        <Route path='/to-do-app/admin' element={<Admin />} />
+        <Route path='/to-do-app/admin/todos-list' element={<Admin />} />
+        <Route path='/to-do-app/admin/users-list' element={<Admin />} />
       </Routes>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { buttonsTexts } from '../../data';
+import { todoGenerator } from '../../utils';
 import { getTodos } from '../../api/todosAPI';
 import { assignTodosAction } from '../../store/reducers/todosReducer';
 import Form from '../Form';
@@ -10,7 +11,7 @@ import './style.scss';
 
 const TodoList = () => {
   const dispatch = useDispatch();
-  const todos = useSelector(state => state.todosReducer); // store only data that should be used
+  const todos = useSelector(state => state.todosReducer);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -38,7 +39,10 @@ const TodoList = () => {
         {
           isLoading ?
             <Loader /> :
-            todos
+            todos.map(e => todoGenerator(e))
+        }
+        {
+          (!todos.length && !isLoading) && <h1>There are no todos</h1>
         }
       </div>
     </div>

@@ -2,47 +2,29 @@ import Todo from "./components/Todo";
 
 localStorage.setItem('listsToggle', JSON.stringify({ showTodos: false, showUsers: false }));
 
-export function todoGenerator(id, title, description, createdBy) {
+export function todoGenerator(data) {
   return (
     <Todo
-      key={id}
-      id={id}
-      title={title}
-      description={description}
-      createdBy={createdBy}
+      key={data.id}
+      id={data.id}
+      title={data.title}
+      description={data.description}
+      createdBy={data.createdBy}
     />
   );
 }
 
 export function todoDeleter(todos, id) {
-  return todos.filter(e => e.props.id !== id);
+  return todos.filter(e => e.id !== id);
 }
 
 export function todoUpdater(todos, id, title, description) {
   return todos.map(e => {
-    if (e.props.id === id) {
-      return (
-        <Todo
-          key={id}
-          id={id}
-          title={title}
-          description={description}
-          createdBy={e.props.createdBy}
-        />
-      );
+    if (e.id === id) {
+      e.title = title;
+      e.description = description;
     }
 
     return e;
   });
-}
-
-export function todosAssigner(data) {
-  return data.map(e => todoGenerator(e.id, e.title, e.description, e.createdBy));
-}
-
-export function loaderStyle() {
-  return {
-    marginTop: '20%',
-    boxShadow: 'none'
-  };
 }
