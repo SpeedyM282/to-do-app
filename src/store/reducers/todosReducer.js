@@ -16,7 +16,7 @@ export function todosReducer(state = defaultState, action) {
       return [...state, ...action.payload];
 
     case ADD_TODO:
-      return [...state, ...action.payload];
+      return [...state, action.payload];
 
     case DELETE_TODO:
       return state.filter(e => e.id !== action.payload);
